@@ -1,20 +1,15 @@
-/////////////////////////////////////////////////////////////////
 #include "OpenT12.h"
-/*
-自己动手
-样样有！
-*/
-
 //重设蓝牙串口缓冲区大小
 #define RX_QUEUE_SIZE 2048
 #define TX_QUEUE_SIZE 2048
 
-/////////////////////////////////////////////////////////////////
+
 BluetoothSerial SerialBT;
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
- 
+///
+
 OneButton RButton(BUTTON_PIN, true);
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C Disp(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 // U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI Disp(U8G2_R0, /* clock=*/ 13, /* data=*/ 11, /* cs=*/ 10, /* dc=*/ 9, /* reset=*/ 8);
@@ -22,7 +17,6 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C Disp(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 // U8G2_ST7920_128X64_F_HW_SPI Disp(U8G2_R0, 5, 15);
 // U8G2_ST7920_128X64_F_SW_SPI Disp(U8G2_R0, /*clock*/18, /*data*/23, /*cs*/5, /*reset*/15);
 PID MyPID(&TipTemperature, &PID_Output, &PID_Setpoint, aggKp, aggKi, aggKd, DIRECT);
-/////////////////////////////////////////////////////////////////
 uint8_t _MODE = true;
 
 char* TipName = "文件系统错误：请上报";
@@ -113,8 +107,8 @@ void setup() {
     //初始化GPIO
     BeepInit();                     //蜂鸣器
     
-    // pinMode(LED_Pin, OUTPUT);    //软件运行指示LED
-    pinMode(POWER_ADC_PIN, INPUT);  //主电压分压检测ADC
+    pinMode(LED_Pin, OUTPUT);    //软件运行指示LED
+    //pinMode(POWER_ADC_PIN, INPUT);  //主电压分压检测ADC
     pinMode(CUR_ADC_PIN, INPUT);    //检流ADC
     //初始化烙铁头
     TipControlInit();

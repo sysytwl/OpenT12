@@ -36,13 +36,13 @@
 #define LED_Pin       2
 #define BEEP_PIN      25
 
-#define ROTARY_PIN1	  14
-#define ROTARY_PIN2	  12
-#define BUTTON_PIN	  33
+#define ROTARY_PIN1	  34
+#define ROTARY_PIN2	  35
+#define BUTTON_PIN	  0
 
 #define TIP_ADC_PIN   39
-#define NTC_ADC_PIN   34
-#define POWER_ADC_PIN 35
+#define NTC_ADC_PIN   -1
+#define POWER_ADC_PIN -1
 #define CUR_ADC_PIN   32
 
 #define PWM1_PIN      26

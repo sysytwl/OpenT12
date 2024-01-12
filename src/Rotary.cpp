@@ -1,7 +1,7 @@
 #include "OpenT12.h"
 
 static double Count=0;
-static double CountLast = 0;
+//static double CountLast = 0;
 static double Count_min=0;
 static double Count_max=0;
 static double Count_step=0;
@@ -9,8 +9,8 @@ static uint8_t CounterChanged = 0;
 
 void sys_RotaryInit(void) {
     //初始化GPIO
-    pinMode(ROTARY_PIN1, INPUT_PULLUP);
-    pinMode(ROTARY_PIN2, INPUT_PULLUP);
+    pinMode(ROTARY_PIN1, INPUT);
+    pinMode(ROTARY_PIN2, INPUT);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
 
     //初始化按键事件检测
@@ -22,7 +22,7 @@ void sys_RotaryInit(void) {
     RButton.setPressTicks(300);
 
     //初始化编码器中断
-    attachInterrupt(ROTARY_PIN1, sys_Counter_IRQHandler, CHANGE);
+    //attachInterrupt(ROTARY_PIN1, sys_Counter_IRQHandler, CHANGE);
 
     //初始化编码器设置(测试默认)
     sys_Counter_Set(-1.2, 6.6, 0.1, 3.14);
@@ -68,39 +68,34 @@ void RotaryDown(void) {
 }
 
 bool Counter_LOCK_Flag = false;
-void IRAM_ATTR sys_Counter_IRQHandler(void) {
-    //重置事件计时器
-    TimerUpdateEvent();
-
-    //若编码器被锁定，则不允许数值操作
-    if (Counter_LOCK_Flag == true) return;
-
-    //更新编码器方向
-    double step = (RotaryDirection == 0) ? Count_step : -Count_step;
-
-    static volatile uint8_t a0, b0;
-    static volatile uint8_t ab0;
-    uint8_t a = digitalRead(ROTARY_PIN1);
-    uint8_t b = digitalRead(ROTARY_PIN2);
-    if (a != a0) {
-        a0 = a;
-        if (b != b0) {
-            b0 = b;
-            Count = constrain(Count + ((a == b) ? step : -step), Count_min, Count_max);
-            if ((a == b) != ab0) {
-                Count = constrain(Count + ((a == b) ? step : -step), Count_min, Count_max);
-            }
-            ab0 = (a == b);
-        }
-    }
-    //printf("编码器:%lf\n", sys_Counter_Get());
-
-    if (Count != CountLast) {
-        CountLast = Count;
-        CounterChanged = 1;
-    }
-
-}
+// void IRAM_ATTR sys_Counter_IRQHandler(void) {
+//     //重置事件计时器
+//     TimerUpdateEvent();
+//     //若编码器被锁定，则不允许数值操作
+//     if (Counter_LOCK_Flag == true) return;
+//     //更新编码器方向
+//     double step = (RotaryDirection == 0) ? Count_step : -Count_step;
+//     static volatile uint8_t a0, b0;
+//     static volatile uint8_t ab0;
+//     uint8_t a = digitalRead(ROTARY_PIN1);
+//     uint8_t b = digitalRead(ROTARY_PIN2);
+//     if (a != a0) {
+//         a0 = a;
+//         if (b != b0) {
+//             b0 = b;
+//             Count = constrain(Count + ((a == b) ? step : -step), Count_min, Count_max);
+//             if ((a == b) != ab0) {
+//                 Count = constrain(Count + ((a == b) ? step : -step), Count_min, Count_max);
+//             }
+//             ab0 = (a == b);
+//         }
+//     }
+//     //printf("编码器:%lf\n", sys_Counter_Get());
+//     if (Count != CountLast) {
+//         CountLast = Count;
+//         CounterChanged = 1;
+//     }
+// }
 
 double sys_Counter_Get(void) {
     // if (Count != CountLast) {
@@ -211,5 +206,17 @@ uint8_t SYSKey = 0;
 uint8_t sys_KeyProcess(void) {
     RButton.tick();
     SYSKey = Read_RButton_FIFO();
+
+    // test code
+    if(analogRead(ROTARY_PIN2) > 3500 && CounterChanged != 1 ){
+        RotaryDown();
+        CounterChanged = 1;
+    } else if (analogRead(ROTARY_PIN2) < 1000 && CounterChanged != 1) {
+        RotaryUp();
+        CounterChanged = 1;
+    } else if (analogRead(ROTARY_PIN2) < 3500 && analogRead(ROTARY_PIN2) > 1000) {
+        CounterChanged = 0;
+    };
+
     return SYSKey;
 }
