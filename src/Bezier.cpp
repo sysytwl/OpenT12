@@ -1,4 +1,5 @@
-#include "OpenT12.h"
+#include "Bezier.h"
+#include "math.h"
 
 //https://github.com/ArduboyCollection/arduboy-moire
 

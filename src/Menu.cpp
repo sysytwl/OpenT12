@@ -1,7 +1,7 @@
-#include "OpenT12.h"
+#include "main.h"
 
-//菜单系统状态 0:自动退出 1:运行菜单系统
-uint8_t Menu_System_State = false;
+
+
 //跳转即退出菜单，该标志位适用于快速打开菜单设置，当遇到跳转操作时将保存设置并退出菜单
 uint8_t Menu_JumpAndExit  = false;
 uint8_t Menu_JumpAndExit_Level = 255;   //当跳转完成后 的 菜单层级 等于“跳转即退出层级”时，“跳转即退出”立马生效
@@ -64,9 +64,7 @@ uint8_t *Switch_space[] = {
     &RotaryDirection,
     &HandleTrigger,
     &Language,
-    &TipID,
 
-    &BLE_State,
     &MenuListMode,
 };
 
@@ -94,7 +92,6 @@ enum Slide_space_Obj{
 
     Slide_space_ShutdownTime,
     Slide_space_SleepTime,
-    Slide_space_BoostTime,
     Slide_space_ScreenProtectorTime,
 
     Slide_space_UndervoltageAlert,
@@ -125,25 +122,15 @@ struct Slide_Bar Slide_space[] = {
 
     {(float*)&ShutdownTime,0,60,1},
     {(float*)&SleepTime,0,60,1},
-    {(float*)&BoostTime,0,600,1},
     {(float*)&ScreenProtectorTime,0,600,1},
 
     {(float*)&UndervoltageAlert,0,36,0.25},
 
-    {(float*)&aggKp,0,50,0.1},
-    {(float*)&aggKi,0,50,0.1},
-    {(float*)&aggKd,0,50,0.1},
-    {(float*)&consKp,0,50,0.1},
-    {(float*)&consKi,0,50,0.1},
-    {(float*)&consKd,0,50,0.1},
 
     {(float*)&KFP_Temp.Q,0,5,0.01},
     {(float*)&KFP_Temp.R,0,25,0.1},
 
-    {(float*)&SamplingRatioWork,1,100,1},
-    {(float*)&ADC_PID_Cycle_List[0],25,2000,25},
-    {(float*)&ADC_PID_Cycle_List[1],25,2000,25},
-    {(float*)&ADC_PID_Cycle_List[2],25,2000,25},
+
 };
 
 /*
@@ -200,9 +187,6 @@ struct Menu_Level_System MenuLevel[] = {
     {12,0,0,2,Menu_HAVE_IMG},
     {13,0,0,1,Menu_HAVE_IMG},
     {14,0,0,2,Menu_HAVE_IMG},
-
-    {15,0,0, MaxTipConfig ,Menu_NULL_IMG},
-
     {16,0,0, 3 ,Menu_NULL_IMG},
     {17,0,0, 4 ,Menu_NULL_IMG},
     {18,0,0, 4 ,Menu_NULL_IMG},
@@ -242,8 +226,8 @@ struct Menu_System Menu[] = {
     { 0,1,       Jump_Menu_Op,          "此焊台",               Menu_NULL_IMG,              1,                                  0,          Menu_NULL_F},
     { 0,2,       Jump_Menu_Op,          "此系统",               Menu_NULL_IMG,              5,                                  0,          Menu_NULL_F},
     { 0,3,       F_Menu_Op,          "返回",               Menu_NULL_IMG,                0,                                  0,          *Save_Exit_Menu_System},
-    // { 0,4,       F_Menu_Op,          "测试",               Menu_NULL_IMG,                0,                                  0,          *(EnterLogo)},
-   // { 0,4,       F_Menu_Op,          "重启",               Menu_NULL_IMG,                0,                                  0,          *(SYS_Reboot)},
+    { 0,4,       F_Menu_Op,          "测试",               Menu_NULL_IMG,                0,                                  0,          *(EnterLogo)},
+    { 0,4,       F_Menu_Op,          "重启",               Menu_NULL_IMG,                0,                                  0,          *(SYS_Reboot)},
  
     { 1,0,       Title_Menu_Op,         "此焊台",               Menu_NULL_IMG,              0,                                  1,          Menu_NULL_F},
     { 1,1,       Jump_Menu_Op,          "烙铁头",               IMG_Tip,              2,                                  0,          Menu_NULL_F},
@@ -253,14 +237,14 @@ struct Menu_System Menu[] = {
     { 1,5,       Jump_Menu_Op,          "返回",                Set7,              0,                                  1,          Menu_NULL_F},
  
     { 2,0,       Title_Menu_Op,         "烙铁头管理",               Menu_NULL_IMG,              1,                                  1,          Menu_NULL_F},
-    { 2,1,       Jump_Menu_Op,          "切换配置",           Set8,              15,                                  0,          *FlashTipMenu},
-    { 2,2,       F_Menu_Op,             "查看温度曲线",           Set0,              0,                                  0,          *ShowCurveCoefficient},
-    { 2,3,       F_Menu_Op,             "校准温度",               Set9,              0,                                  0,          *CalibrationTemperature},
+    { 2,1,       Jump_Menu_Op,          "切换配置",           Set8,              15,                                  0, Menu_NULL_F},
+    { 2,2,       F_Menu_Op,             "查看温度曲线",           Set0,              0,                                  0, Menu_NULL_F},
+    { 2,3,       F_Menu_Op,             "校准温度",               Set9,              0,                                  0, Menu_NULL_F},
     { 2,4,       Jump_Menu_Op,          "PID参数",                 Set3,              16,                                  0,    Menu_NULL_F},
-    { 2,5,     F_Menu_Op,             "新建",               IMG_Files,              0,                                  0,     *NewTipConfig},
-    { 2,6,     F_Menu_Op,             "重命名",             IMG_Pen2,              0,                                  0,      *TipRename},
-    { 2,7,     F_Menu_Op,             "删除",               Set10,              0,                                  0,         *TipDel},
-    { 2,8,       Jump_Menu_Op,          "返回",               Save,              1,                                  1,          *SaveTipConfig},
+    { 2,5,     F_Menu_Op,             "新建",               IMG_Files,              0,                                  0, Menu_NULL_F},
+    { 2,6,     F_Menu_Op,             "重命名",             IMG_Pen2,              0,                                  0, Menu_NULL_F},
+    { 2,7,     F_Menu_Op,             "删除",               Set10,              0,                                  0, Menu_NULL_F},
+    { 2,8,       Jump_Menu_Op,          "返回",               Save,              1,                                  1, Menu_NULL_F},
  
     { 3,0,       Title_Menu_Op,         "温度场景",               Menu_NULL_IMG,              1,                                  2,          Menu_NULL_F},
     { 3,1,       Progress_Bar_Menu_Op,  "启动温度",         Set13,              Slide_space_BootTemp,                                  0,          Menu_NULL_F},
@@ -268,11 +252,10 @@ struct Menu_System Menu[] = {
     { 3,3,       Progress_Bar_Menu_Op,  "休眠温度",         Set11,              Slide_space_SleepTemp,                                  0,          Menu_NULL_F},
     { 3,4,       Jump_Menu_Op,          "返回",                  Save,              1,                                  2,          Menu_NULL_F},
  
-    { 4,0,       Title_Menu_Op,         "定时场景",               Menu_NULL_IMG,              1,                                  3,          Menu_NULL_F},
-    { 4,1,       Progress_Bar_Menu_Op,  "停机触发(分)",         Set13,              Slide_space_ShutdownTime,                                               0,          Menu_NULL_F},
-    { 4,2,       Progress_Bar_Menu_Op,  "提温时长(秒)",         Set14,              Slide_space_BoostTime,                                                0,          Menu_NULL_F},
-    { 4,3,       Progress_Bar_Menu_Op,  "休眠触发(分)",         Set11,              Slide_space_SleepTime,                                                0,          Menu_NULL_F},
-    { 4,4,       Progress_Bar_Menu_Op,  "屏保触发(秒)",         Set4,              Slide_space_ScreenProtectorTime,                0,          Menu_NULL_F},
+    { 4,0, Title_Menu_Op, "定时场景", Menu_NULL_IMG, 1, 3, Menu_NULL_F},
+    { 4,1, Progress_Bar_Menu_Op, "停机触发(分)", Set13, Slide_space_ShutdownTime, 0, Menu_NULL_F},
+    { 4,3, Progress_Bar_Menu_Op, "休眠触发(分)", Set11, Slide_space_SleepTime, 0, Menu_NULL_F},
+    { 4,4, Progress_Bar_Menu_Op,  "屏保触发(秒)", Set4, Slide_space_ScreenProtectorTime, 0, Menu_NULL_F},
     { 4,5,       Jump_Menu_Op,          "返回",                  Save,              1,                                  3,          Menu_NULL_F},
  
     { 5,0,       Title_Menu_Op,         "此系统",               Menu_NULL_IMG,              0,                                  2,          Menu_NULL_F},
@@ -334,7 +317,7 @@ struct Menu_System Menu[] = {
     { 14,1,       SingleBox_Menu_Op,     "震动开关",               IMG_VibrationSwitch,        SwitchSpace_HandleTrigger,          0,          *JumpWithTitle},
     { 14,2,       SingleBox_Menu_Op,     "干簧管",                 IMG_ReedSwitch,             SwitchSpace_HandleTrigger,          1,          *JumpWithTitle},
  
-    { 15,0,       Title_Menu_Op,         "烙铁头列表",             Menu_NULL_IMG,              2,                                  1,          *LoadTipConfig},
+    { 15,0,       Title_Menu_Op,         "烙铁头列表",             Menu_NULL_IMG,              2,                                  1, Menu_NULL_F},
     { 15,1,       SingleBox_Menu_Op,     "",             Menu_NULL_IMG,        SwitchSpace_TipID,          0,        *JumpWithTitle},
     { 15,2,       SingleBox_Menu_Op,     "",             Menu_NULL_IMG,        SwitchSpace_TipID,          1,       *JumpWithTitle},
     { 15,3,       SingleBox_Menu_Op,     "",             Menu_NULL_IMG,        SwitchSpace_TipID,          2,       *JumpWithTitle},
@@ -351,17 +334,17 @@ struct Menu_System Menu[] = {
     { 16,2,       Jump_Menu_Op,          "PID接近期参数",               Menu_NULL_IMG,      18,                                 0,          Menu_NULL_F },
     { 16,3,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,           2,                                  3,          Menu_NULL_F },
 
-    { 17,0,       Title_Menu_Op,         "PID爬升期",             Menu_NULL_IMG,            16,                                 1,          *SaveTipConfig },
+    { 17,0,       Title_Menu_Op,         "PID爬升期",             Menu_NULL_IMG,            16,                                 1, Menu_NULL_F},
     { 17,1,       Progress_Bar_Menu_Op,  "比例P",               Menu_NULL_IMG,              Slide_space_PID_AP,                 0,          Menu_NULL_F },
     { 17,2,       Progress_Bar_Menu_Op,  "积分I",               Menu_NULL_IMG,              Slide_space_PID_AI,                 0,          Menu_NULL_F },
     { 17,3,       Progress_Bar_Menu_Op,  "微分D",               Menu_NULL_IMG,              Slide_space_PID_AD,                 0,          Menu_NULL_F },
-    { 17,4,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,           16,                                 1,          *SaveTipConfig },
+    { 17,4,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,           16,                                 1, Menu_NULL_F},
 
-    { 18,0,       Title_Menu_Op,         "PID接近期",             Menu_NULL_IMG,            16,                                 2,          *SaveTipConfig },
+    { 18,0,       Title_Menu_Op,         "PID接近期",             Menu_NULL_IMG,            16,                                 2, Menu_NULL_F},
     { 18,1,       Progress_Bar_Menu_Op,  "比例P",               Menu_NULL_IMG,              Slide_space_PID_CP,                 0,          Menu_NULL_F },
     { 18,2,       Progress_Bar_Menu_Op,  "积分I",               Menu_NULL_IMG,              Slide_space_PID_CI,                 0,          Menu_NULL_F },
     { 18,3,       Progress_Bar_Menu_Op,  "微分D",               Menu_NULL_IMG,              Slide_space_PID_CD,                 0,          Menu_NULL_F },
-    { 18,4,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,           16,                                 2,          *SaveTipConfig },
+    { 18,4,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,           16,                                 2, Menu_NULL_F},
 
     { 19,0,       Title_Menu_Op,         "温控设置",             Menu_NULL_IMG,            1,                                 4,          Menu_NULL_F },
     { 19,1,       Switch_Menu_Op,        "PID状态",               Menu_NULL_IMG,           SwitchSpace_PIDMode,                                0,          Menu_NULL_F },
@@ -382,31 +365,12 @@ struct Menu_System Menu[] = {
     { 21,3,       Progress_Bar_Menu_Op,  "温差≤50",               Menu_NULL_IMG,           Slide_space_ADC_PID_Cycle_List_2,   0,          Menu_NULL_F },
     { 21,4,       Jump_Menu_Op,          "返回",                   Menu_NULL_IMG,          19,                                 3,          Menu_NULL_F },
 
-    { 22,0,       Title_Menu_Op,         "蓝牙",             Menu_NULL_IMG,            5,                                 2,          Menu_NULL_F },
-    { 22,1,       Switch_Menu_Op,        "状态",               Menu_NULL_IMG,         SwitchSpace_BLE_State,   0,          *BLE_Restart },
-    { 22,2,       F_Menu_Op,             "设备名称",          Menu_NULL_IMG,          22,   2,          *BLE_Rename },
-    { 22,3,       Jump_Menu_Op,          "返回",               Menu_NULL_IMG,          5,                                 2,          Menu_NULL_F },
+    {22, 0, Title_Menu_Op, "蓝牙", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
+    {22, 1, Switch_Menu_Op, "状态", Menu_NULL_IMG, SwitchSpace_BLE_State, 0, Menu_NULL_F}, // <---
+    {22, 2, F_Menu_Op, "设备名称", Menu_NULL_IMG, 22, 2, Menu_NULL_F}, // <---
+    {22, 3, Jump_Menu_Op, "返回", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
 };
-/***
- * @description: 快速打开烙铁列表
- * @param {*}
- * @return {*}
- */
-void System_TipMenu_Init(void) {
-    printf("尝试打开烙铁头列表\n");
-    //关闭功率管输出
-    SetPOWER(0);
-    //初始化菜单
-    FlashTipMenu();                 //刷新菜单系统烙铁列表
 
-    Menu_JumpAndExit = true;   //菜单标志：“跳转即退出” 在设置完Tip后自动退出菜单
-    Menu_JumpAndExit_Level = 2; //当菜单进行跳转操作，跳转到该 Menu_JumpAndExit_Level 层后检查“跳转即退出” 标志
-
-    MenuLevel[15].x = 0;  //复位第一层菜单的位置
-    MenuLevelId = 15;       //设定跳转目标
-    *Slide_space[Slide_space_Scroll].x = 0;//复位第一层菜单的位置
-    Next_Menu();
-}
 /*** 
  * @description: 快速打开PID菜单
  * @param {*}
@@ -415,9 +379,9 @@ void System_TipMenu_Init(void) {
 void System_PIDMenu_Init(void) {
     printf("尝试打开PID菜单\n");
     //关闭功率管输出
-    SetPOWER(0);
+    //SetPOWER(0);
     //初始化菜单
-    FlashTipMenu();                 //刷新菜单系统烙铁列表
+    //FlashTipMenu();                 //刷新菜单系统烙铁列表
 
     Menu_JumpAndExit = true;   //菜单标志：“跳转即退出” 在设置完Tip后自动退出菜单
     Menu_JumpAndExit_Level = 2; //当菜单进行跳转操作，跳转到该 Menu_JumpAndExit_Level 层后检查“跳转即退出” 标志
@@ -436,10 +400,10 @@ void System_PIDMenu_Init(void) {
  */
 void System_Menu_Init(void) {
     //关闭功率管输出
-    SetPOWER(0);
+    //SetPOWER(0);
     //关闭输出
-    PWMOutput_Lock = true;
-    SetPOWER(0);
+    //PWMOutput_Lock = true;
+    //SetPOWER(0);
     //初始化菜单
     MenuLevel[0].x = 0;  //复位第一层菜单的位置
     MenuLevelId = 0;       //设定跳转目标
@@ -455,10 +419,9 @@ void System_Menu_Init(void) {
  * @return {*}
  */
 void System_UI_Init(void) {
-    sys_Counter_Set(TipMinTemp, TipMaxTemp, 5, UserSetTipTemperature);
-    //输出解锁
-    PWMOutput_Lock = false;
+    Output_Lock = false; //输出解锁
 }
+
 //系统UI
 void System_UI(void) {
     Clear();
@@ -479,10 +442,11 @@ void System_UI(void) {
 
                     switch (i) {
                     case 0: sprintf(buffer, "状态%d:%s 控温:%s", TempCTRL_Status, TempCTRL_Status_Mes[TempCTRL_Status], (PIDMode == 1) ? "PID" : "模糊"); break;
-                    case 1: sprintf(buffer, "设定%.0lf°C 当前%.0lf°C", PID_Setpoint, TipTemperature); break;
-                    case 2: sprintf(buffer, "ADC:%d PID:%.0lf", LastADC, PID_Output); break;
+                    //case 1: sprintf(buffer, "设定%.0lf°C 当前%.0lf°C", PID_Setpoint, TipTemperature); break;
+                    //case 2: sprintf(buffer, "ADC:%d PID:%.0lf", LastADC, PID_Output); break;
                     case 3: sprintf(buffer, "%.2lfV %.2lfA %.2lfW", SYS_Voltage, SYS_Current,SYS_Voltage * SYS_Current); break;
-                    case 4: sprintf(buffer, "%.3lf %.3lf %.3lf", aggKp, aggKi, aggKd); break;
+                    //case 4: sprintf(buffer, "%.3lf %.3lf %.3lf", aggKp, aggKi, aggKd); break;
+                    default: break;
                     }
                     Disp.print(buffer);
                 }
@@ -511,7 +475,7 @@ void System_UI(void) {
                     }
                 }else{
                     //显示蓝牙图标
-                    if (BLE_State) Draw_Slow_Bitmap(92, 25, IMG_BLE_S, 9, 11);
+                    Draw_Slow_Bitmap(92, 25, IMG_BLE_S, 9, 11);
                 }
 
                 ///////////////////////////////////////////////////////////////////////////////////
@@ -522,22 +486,22 @@ void System_UI(void) {
                 if (TempCTRL_Status == TEMP_STATUS_ERROR || ERROREvent) {
                     if ((millis() / 250) % 2) Disp.print("---");
                 }else {
-                    //如果温度波动足够小，则显示当前温度为设定温度
-                    if (TempGap < 10) Disp.printf("%.0lf", PID_Setpoint);  //显示"假"温度(设定温度)
-                    else Disp.printf("%.0lf", TipTemperature);    //显示真实温度
+                    // //如果温度波动足够小，则显示当前温度为设定温度
+                    // if (TempGap < 10) Disp.printf("%.0lf", PID_Setpoint);  //显示"假"温度(设定温度)
+                    // else Disp.printf("%.0lf", TipTemperature);    //显示真实温度
                 }
 
                 Disp.setFont(u8g2_font_wqy12_t_gb2312);
                 ///////////////////////////////////////////////////////////////////////////////////
 
                 //右上角运行指示角标
-                if (POWER > 0 && PWM_WORKY) {
-                    uint8_t TriangleSize = map(POWER,0,255,16,0);
-                    //Disp.drawTriangle(100 + TriangleSize, 0, 127, 0, 127, 27 - TriangleSize);
-                    Disp.drawTriangle((119 - 12) + TriangleSize, 12, 125, 12, 125, (18 +12) - TriangleSize);
-                    // Draw_Slow_Bitmap(114, 15, PositioningCursor, 8, 8);
-                    //Disp.drawTriangle(103, 0, 127, 0, 127, 24);
-                }
+                // if (POWER > 0 && PWM_WORKY) {
+                //     uint8_t TriangleSize = map(POWER,0,255,16,0);
+                //     //Disp.drawTriangle(100 + TriangleSize, 0, 127, 0, 127, 27 - TriangleSize);
+                //     Disp.drawTriangle((119 - 12) + TriangleSize, 12, 125, 12, 125, (18 +12) - TriangleSize);
+                //     // Draw_Slow_Bitmap(114, 15, PositioningCursor, 8, 8);
+                //     //Disp.drawTriangle(103, 0, 127, 0, 127, 24);
+                // }
 
 
                 
@@ -551,13 +515,6 @@ void System_UI(void) {
 
                 //绘制底部状态条
                 DrawStatusBar(1);
-
-                //如果当前是处于爆发技能，则显示技能剩余时间进度条
-                if (TempCTRL_Status == TEMP_STATUS_BOOST && DisplayFlashTick % 2) {
-                    uint8_t BoostTimeBar = map(millis() - BoostTimer, 0, BoostTime * 1000, 0, 14);
-                    Disp.drawBox(74, 37, 14, BoostTimeBar);
-
-                }
             }
 
         }

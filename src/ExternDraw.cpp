@@ -1,31 +1,11 @@
 #include "OpenT12.h"
 
 void EnterLogo(void) {
-    
-    // for (int16_t x=-128;x<128;x+=12) {
-    //     //绘制Logo
-    //     Disp.setDrawColor(1);
-    //     Draw_Slow_Bitmap(0, 0, Logo, 128, 64);
-    //     //转场特效
-    //     Disp.setBitmapMode(1);
-    //     Disp.setDrawColor(0);
-
-    //     Disp.drawXBM(x, 0, 128, 64, TranAnimation);
-    //     if (x < 0) Disp.drawBox(128 + x, 0, -x, 64);
-
-    //     Disp.setBitmapMode(0);
-    //     Display();
-    // }
-    // Disp.setDrawColor(1);
-
     float rate ,i=1;
     int x, y, w;
     uint8_t flag = 0;
 
     while(flag!=2) {
-
-        GetADC0();  //播放动画是可以同时初始化软件滤波
-
         Clear();
         
         switch (flag) {
@@ -49,8 +29,6 @@ void EnterLogo(void) {
     }
 
     for (int16_t xx=-128;xx<128;xx+=12) {
-        GetADC0();  //播放动画是可以同时初始化软件滤波
-        
         Clear();
         //绘制Logo
         Disp.setDrawColor(1);
@@ -299,11 +277,11 @@ void DrawStatusBar(bool color) {
     //框
     Disp.drawFrame(0, 53, 103, 11);
     //条
-    if (TipTemperature <= 500) Disp.drawBox(0, 53, map(TipTemperature, 0, 500, 2, 103), 11);
+    Disp.drawBox(0, 53, map(99, 0, 500, 2, 103), 11); //<--- segnal stength
 
     //功率条
     Disp.drawFrame(104, 53, 23, 11);
-    Disp.drawBox(104, 53, map(POWER, 0, 255, 0, 23), 11);
+    Disp.drawBox(104, 53, map(40, 0, 255, 0, 23), 11); // <--- TX voltage
 
     Disp.drawHLine(117, 51, 11);
     Disp.drawPixel(103, 52);
@@ -313,10 +291,10 @@ void DrawStatusBar(bool color) {
     Disp.setDrawColor(2);
 
     //画指示针
-    Draw_Slow_Bitmap(map(PID_Setpoint, 0, 500, 2, 103) - 4, 54, PositioningCursor, 8, 8);
+    //Draw_Slow_Bitmap(map(PID_Setpoint, 0, 500, 2, 103) - 4, 54, PositioningCursor, 8, 8);
 
     Disp.setCursor(2,53);
-    Disp.printf("%.0f",PID_Setpoint);
+    //Disp.printf("%.0f",PID_Setpoint);
 
     Disp.setCursor(105, 53);
     //显示输出功率 百分比

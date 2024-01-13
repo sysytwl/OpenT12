@@ -1,4 +1,7 @@
-#include "OpenT12.h"
+#include "MathFun.h"
+
+
+
 // extern U8G2_SSD1306_128X64_NONAME_F_4W_HW_SPI Disp;
 // extern U8G2_ST7920_128X64_F_SW_SPI Disp;
 /*
@@ -139,6 +142,7 @@ double ESP32_ADC2Vol(uint16_t adc) {
 uint32_t Minute2Millis(float min) {
     return min * 60 * 1000;
 }
+
 /*** 
  * @description: 判断符号正负
  * @param {int} x

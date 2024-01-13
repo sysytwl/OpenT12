@@ -11,8 +11,7 @@ uint32_t Minute2Millis(float min);
 void ShowBuffer(uint8_t* buffer, uint32_t size);
 
 //卡尔曼滤波
-typedef struct
-{
+typedef struct{
     float LastP;//上次估算协方差 初始化值为0.02
     float Now_P;//当前估算协方差 初始化值为0
     float out;//卡尔曼滤波器输出 初始化值为0

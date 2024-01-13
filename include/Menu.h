@@ -1,9 +1,8 @@
-#ifndef __MENU_H
-#define __MENU_H
 #include <stdint.h>
 #include "Type.h"
 
-extern uint8_t Menu_System_State;
+
+uint8_t Menu_System_State = false; //菜单系统状态 0:自动退出 1:运行菜单系统
 extern uint32_t pages_Tip_Display_timer;
 extern uint8_t Menu_JumpAndExit;
 extern uint8_t Menu_JumpAndExit_Level;
@@ -94,5 +93,3 @@ struct Menu_System {
 
 extern struct Menu_System Menu[];
 extern struct Menu_Level_System MenuLevel[];
-
-#endif

@@ -1,6 +1,9 @@
-#ifndef BEEP_H
-#define BEEP_H
-#include "Type.h"
+#ifndef beep_h
+#define beep_h
+
+#include <Arduino.h>
+
+
 
 enum CALCULATORMUSICTONE {
     CMT_NULL = 255,
@@ -19,34 +22,82 @@ enum CALCULATORMUSICTONE {
     CMT_D = 21,
     CMT_E = 22,
 };
-struct TONE
-{
+
+struct TONE{
     note_t note;
     uint8_t rp;
     uint16_t delay;
 };
-extern TONE testSound[];
-extern TONE BootSound[];
-extern TONE TipInstall[];
-extern TONE TipRemove[];
-extern TONE Beep1[];
-extern TONE Beep2[];
-extern TONE Beep3[];
 
-extern uint32_t PlayTonesTimer;
-extern uint16_t PlayTonesDelayTime;
-extern uint16_t PlayTones_Schedule;
-extern TONE*    MySound;
+TONE testSound[] {
+    {NOTE_D,CMT_9,250},
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_5,250},
+    {NOTE_D,CMT_9,250},
+    {NOTE_D,CMT_8,250},
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_NULL,250},
 
-extern bool PlaySoundLoopState;
-//底层函数
-void BeepInit(void);
-void SetTone(double freq);
-double GetNote(note_t note, uint8_t rp);
-void SetNote(note_t note, uint8_t rp);
-//高层应用
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_5,250},
+    {NOTE_D,CMT_9,250},
+    {NOTE_D,CMT_4,250},
+    {NOTE_D,CMT_5,250},
+    {NOTE_D,CMT_NULL,250},
+    
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_5,250},
+    {NOTE_D,CMT_9,250},
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_M,250},
+    {NOTE_D,CMT_NULL,250},
+
+    {NOTE_MAX,255,0},
+};
+
+TONE BootSound[]{
+    {NOTE_D,CMT_5,230},
+    {NOTE_D,CMT_7,230},
+    {NOTE_D,CMT_9,215},
+    {NOTE_D,CMT_M,215},
+    {NOTE_MAX,0,0},
+};
+
+TONE RxConnected[]{
+    {NOTE_D,CMT_7,250},
+    {NOTE_D,CMT_M,250},
+    {NOTE_MAX,0,0},
+};
+
+TONE RxLostConnection[]{
+    {NOTE_D,CMT_9,250},
+    {NOTE_D,CMT_5,250},
+    {NOTE_MAX,0,0},
+};
+
+TONE Beep1[]{
+    {NOTE_D,CMT_8,50},
+    {NOTE_MAX,0,0},
+};
+
+TONE Beep2[]{
+    {NOTE_D,CMT_M,50},
+    {NOTE_D,CMT_NULL,50},
+    {NOTE_D,CMT_M,50},
+    {NOTE_MAX,0,0},
+};
+
+TONE Beep3[]{
+    {NOTE_D,CMT_7,50},
+    {NOTE_D,CMT_9,50},
+    {NOTE_D,CMT_M,50},
+    {NOTE_MAX,0,0},
+};
+
+
+
+void BeepInit();
 void SetSound(TONE sound[]);
 void PlaySoundLoop(void);
-uint8_t PlayTones(TONE sound[], uint16_t* Schedule);
 
 #endif
