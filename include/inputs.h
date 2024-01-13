@@ -2,6 +2,7 @@
 #define inputs_h
 
 void InputsInit();
+int mapAndAdjustJoystickDeadBandValues(int value, bool reverse);
 void KeyTick();
 
 void sys_Counter_click(void);

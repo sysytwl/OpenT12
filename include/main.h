@@ -12,6 +12,7 @@
 #include "qrcode.h"
 #include "Bitmap.h"
 #include "Beep.h"
+#include "espnow.h"
 
 
 
@@ -21,7 +22,7 @@
 #define getbit(x,y)       ((x) >> (y)&1)
 
 //注意Pin36与Pin39连接了内部霍尔传感器,不建议复用高敏感用途
-//另外，建议给ADC输入串联一个0.1uF的电容，有利于减少噪声
+//建议给ADC输入串联一个0.1uF的电容，有利于减少噪声
 #define LED_Pin 2
 uint8_t BEEP_PIN = 25;
 uint8_t BEEP_Channel = 2;
@@ -54,6 +55,22 @@ void Log(MESSAGETYPE type, const char* s);
 void SYS_Reboot(void);
 void About(void);
 
+struct PacketData {
+  int16_t lxAxisValue;
+  int16_t lyAxisValue;
+  int16_t rxAxisValue;
+  int16_t ryAxisValue;
+ 
+  int16_t channel1;
+  int16_t channel2;
+  int16_t channel3;
+  int16_t channel4;  
+  int16_t channel5;
+  int16_t channel6;
+  int16_t channel7;
+  int16_t channel8;  
+} data;
+
 uint64_t ChipMAC;
 char ChipMAC_S[18] = {0};
 
@@ -84,11 +101,9 @@ uint8_t PanelSettings = PANELSET_Simple;
 uint8_t ScreenFlip = false;
 uint8_t SmoothAnimation_Flag = true;
 float ScreenBrightness = 128;
-//uint8_t OptionStripFixedLength_Flag = false;
 uint8_t Volume = true;
 uint8_t RotaryDirection = false;
 uint8_t SleepTime = 1;
-//extern uint8_t HandleTrigger;
 float UndervoltageAlert = 7.0;
 uint8_t Language = LANG_Chinese;
 enum SYSLANG {
@@ -96,6 +111,7 @@ enum SYSLANG {
     LANG_Chinese,
     LANG_Russian,
 };
+
 enum PANELSET {
     PANELSET_Simple = 0,
     PANELSET_Detailed,

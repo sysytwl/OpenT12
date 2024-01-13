@@ -18,6 +18,21 @@ extern uint8_t POWER_ADC_R2_GND;
 extern float SYS_Voltage;
 
 extern uint8_t SYSKey;
+extern struct PacketData {
+  int16_t lxAxisValue;
+  int16_t lyAxisValue;
+  int16_t rxAxisValue;
+  int16_t ryAxisValue;
+ 
+  int16_t channel1;
+  int16_t channel2;
+  int16_t channel3;
+  int16_t channel4;  
+  int16_t channel5;
+  int16_t channel6;
+  int16_t channel7;
+  int16_t channel8;  
+} data;
 
 void InputsInit() {
     pinMode(x_axis, INPUT); // joystick
@@ -57,9 +72,32 @@ bool VituralKey(uint16_t ADC) {
     };
 }
 
+int mapAndAdjustJoystickDeadBandValues(int value, bool reverse) {
+  if (value >= 2200) {
+    value = map(value, 2200, 4095, 127, 254);
+  } else if (value <= 1800) {
+    value = (value == 0 ? 0 : map(value, 1800, 0, 127, 0));  
+  } else {
+    value = 127;
+  }
+
+  if (reverse) {
+    value = 254 - value;
+  }
+  Serial.println(value);  
+  return value;
+}
+
 void KeyTick(void) {
-    RButton.tick();
-    SYSKey = Read_RButton_FIFO();
+  // Digital
+  RButton.tick();
+  SYSKey = Read_RButton_FIFO();
+
+  // Analogue
+//   data.lxAxisValue    = mapAndAdjustJoystickDeadBandValues(analogRead(32), false);
+//   data.lyAxisValue    = mapAndAdjustJoystickDeadBandValues(analogRead(33), false);
+  data.rxAxisValue    = mapAndAdjustJoystickDeadBandValues(GetADC(x_axis), false);
+  data.ryAxisValue    = mapAndAdjustJoystickDeadBandValues(GetADC(y_axis), false);
 }
 
 //按键FIFO循环大小
@@ -121,7 +159,6 @@ static uint8_t Read_RButton_FIFO(void) {
 
 void sys_Counter_click(void){
     printf("触发单击事件\n");
-    SetSound(Beep1);
     Write_RButton_FIFO(1);
 }
 

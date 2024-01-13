@@ -9,15 +9,8 @@ uint32_t EventTimerUpdate = 0; //事件计时器
 extern bool SleepEvent;
 extern uint8_t SleepTime;
 
-/*** 
- * @description: 用户有动作时将会触发此函数
- * @param {*}
- * @return {*}
- */
 void TimerUpdateEvent(void) {
-    //printf("重置时间计时器\n");
     EventTimerUpdate = millis();
-    //ScreenProtectorTimer = millis();
 }
 
 /*** 
