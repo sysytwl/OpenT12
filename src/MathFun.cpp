@@ -1,4 +1,5 @@
 #include "MathFun.h"
+#include "Arduino.h"
 
 
 
@@ -68,9 +69,9 @@ void GetUtf8Length(char const* str, int* cnt) {
     }
 }
 
-uint32_t Get_UTF8_Ascii_Pix_Len(uint8_t size, const char* s) {
-  return Disp.getUTF8Width(s);
-}
+// uint32_t Get_UTF8_Ascii_Pix_Len(uint8_t size, const char* s) {
+//   return Disp.getUTF8Width(s);
+// }
 
 /*
     @作用 UTF8混合字符串计算水平居中

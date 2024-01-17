@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "*.m": "matlab",
-        "shell.h": "c"
+        "shell.h": "c",
+        "array": "cpp",
+        "string": "cpp"
     }
 }

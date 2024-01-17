@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "Type.h"
+
 
 
 uint8_t Menu_System_State = false; //菜单系统状态 0:自动退出 1:运行菜单系统

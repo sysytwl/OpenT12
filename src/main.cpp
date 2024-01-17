@@ -1,31 +1,18 @@
 #include "main.h"
 #include <Arduino.h>
 
-
+uint8_t POWER_ADC_PIN, uint8_t POWER_ADC_VCC_R1, uint8_t POWER_ADC_R2_GND
 
 void setup() {
+    Serial.begin(115200);
     //noInterrupts();
+
     ////////////////////////////初始化硬件/////////////////////////////
     ChipMAC = ESP.getEfuseMac();
     sprintf(CompileTime, "%s %s", __DATE__, __TIME__);
-    for (uint8_t i = 0;i < 6;i++)  sprintf(ChipMAC_S + i * 3, "%02X%s", ((uint8_t*)&ChipMAC)[i], (i != 5) ? ":" : "");
-
-    Serial.begin(115200);
-
-    //pinMode(LED_Pin, OUTPUT); //软件运行指示LED
-
-    BeepInit(); //蜂鸣器
-    InputsInit();
-
-    //初始化OLED
-    Disp.begin();
-    // Disp.setBusClock(921600);
-    Disp.enableUTF8Print();
-    Disp.setFontDirection(0);
-    Disp.setFontPosTop();
-    Disp.setFont(u8g2_font_wqy12_t_gb2312);
-    Disp.setDrawColor(1);
-    Disp.setFontMode(1);
+    for (uint8_t i = 0;i < 6;i++) {
+        sprintf(ChipMAC_S + i * 3, "%02X%s", ((uint8_t*)&ChipMAC)[i], (i != 5) ? ":" : "");
+    }
 
     ////////////////////////////初始化软件/////////////////////////////
     FilesSystemInit(); //启动文件系统，并读取存档
@@ -33,25 +20,18 @@ void setup() {
     //BLE_Init(); //初始化蓝牙（可选）
     SetSound(BootSound); //播放音效
     System_UI_Init(); //初始化UI
-    SYS_Ready = true;
 }
 
 void loop() {
-    KeyTick();
-
+    Inputs.KeyTick(data);
     TimerEventLoop(); //更新系统事件
-
     PlaySoundLoop();
     SYS_StateCode_Update(); //更新状态码
+    ShellLoop(void);
     System_UI(); //刷新UI
 }
 
-
-
-void SYS_Reboot(void) {
-    ESP.restart();
-}
-
+//ESP.restart();
 void About(void) {
     //播放Logo动画
     //EnterLogo();
@@ -61,7 +41,6 @@ void About(void) {
 
     switch (Language) {
         case LANG_Chinese:
-            // qrcode_initText(&qrcode, qrcodeData, 3, 0, "https://gitee.com/createskyblue/OpenT12");   //禁用Gitee源:注册不方便
             qrcode_initText(&qrcode, qrcodeData, 3, 0, "https://github.com/createskyblue/OpenT12");
         break;
 
