@@ -52,6 +52,7 @@ enum Switch_space_Obj{
     SwitchSpace_BLE_State,
     SwitchSpace_MenuListMode,
 };
+
 uint8_t *Switch_space[] = {
     &SmoothAnimation_Flag,
     &OptionStripFixedLength_Flag,
@@ -112,6 +113,7 @@ enum Slide_space_Obj{
     Slide_space_ADC_PID_Cycle_List_2,
 
 };
+
 struct Slide_Bar Slide_space[] = {
     {(float*)&ScreenBrightness,0,255,16}, //亮度调整
     {(float*)&MenuScroll,0,SCREEN_ROW / 16,1}, //自适应菜单滚动范围
@@ -132,6 +134,8 @@ struct Slide_Bar Slide_space[] = {
 
 
 };
+
+Slide_space[Slide_space_ScreenBrightness].x;
 
 /*
     @结构体 Smooth_Animation Menu_Smooth_Animation[]
@@ -372,39 +376,11 @@ struct Menu_System Menu[] = {
 };
 
 /*** 
- * @description: 快速打开PID菜单
- * @param {*}
- * @return {*}
- */
-void System_PIDMenu_Init(void) {
-    printf("尝试打开PID菜单\n");
-    //关闭功率管输出
-    //SetPOWER(0);
-    //初始化菜单
-    //FlashTipMenu();                 //刷新菜单系统烙铁列表
-
-    Menu_JumpAndExit = true;   //菜单标志：“跳转即退出” 在设置完Tip后自动退出菜单
-    Menu_JumpAndExit_Level = 2; //当菜单进行跳转操作，跳转到该 Menu_JumpAndExit_Level 层后检查“跳转即退出” 标志
-
-    MenuLevel[16].x = 0;  //复位第一层菜单的位置
-    MenuLevelId = 16;       //设定跳转目标
-    *Slide_space[Slide_space_Scroll].x = 0;//复位第一层菜单的位置
-    Next_Menu();
-    printf("菜单状态:%d\n", Menu_System_State);
-}
-
-/*** 
  * @description: 初始化菜单
  * @param {*}
  * @return {*}
  */
 void System_Menu_Init(void) {
-    //关闭功率管输出
-    //SetPOWER(0);
-    //关闭输出
-    //PWMOutput_Lock = true;
-    //SetPOWER(0);
-    //初始化菜单
     MenuLevel[0].x = 0;  //复位第一层菜单的位置
     MenuLevelId = 0;       //设定跳转目标
     *Slide_space[Slide_space_Scroll].x = 0;//复位第一层菜单的位置
@@ -412,14 +388,6 @@ void System_Menu_Init(void) {
 
     //解除编码器锁定（如果有）
     Counter_LOCK_Flag = false;
-}
-/*** 
- * @description: 初始化主界面
- * @param {*}
- * @return {*}
- */
-void System_UI_Init(void) {
-    Output_Lock = false; //输出解锁
 }
 
 //系统UI
@@ -528,49 +496,6 @@ void System_UI(void) {
 
 }
 
-/*/////////////////////////////////////////////////////////////////////
-
-    @自定义功能函数
-
-*//////////////////////////////////////////////////////////////////////
-/*
-    @函数 Update_OLED_Light_Level
-    @brief 更新屏幕亮度设置
-    @param -
-
-*/
-void Update_OLED_Light_Level(void) {
-    Disp.sendF("c",0x81);  //向SSD1306发送指令：设置内部电阻微调
-    Disp.sendF("c",(uint8_t)*Slide_space[Slide_space_ScreenBrightness].x); //微调范围（0-255）
-}
-
-void Update_OLED_Flip(void) {
-    Disp.setFlipMode(ScreenFlip);
-    if (Menu_System_State) PopMsg_ScreenFlip();
-}
-
-void PopMsg_RotaryDirection(void) {
-    char buffer[20];
-    sprintf(buffer, "编码器:%s", (RotaryDirection == true) ? "顺时针" : "逆时针");
-    Pop_Windows(buffer);
-    delay(500);
-}
-
-void PopMsg_ScreenFlip(void) {
-    char buffer[20];
-    sprintf(buffer, "%s", (ScreenFlip == true) ? "翻转显示" : "正常显示");
-    Pop_Windows(buffer);
-    delay(500);
-}
-
-void PopMsg_ListMode(void) {
-    char buffer[20];
-    sprintf(buffer, "%s", (MenuListMode == true) ? "列表模式" : "图标模式");
-    Pop_Windows(buffer);
-    delay(500);
-    Next_Menu();
-}
-
 
 /*/////////////////////////////////////////////////////////////////////
 
@@ -637,11 +562,13 @@ void Smooth_Animation_System() {
         }
     }
 }
+
 void SmoothAnimationSystem_Clean(){
     for (uint8_t i = 0;i < Smooth_Animation_Num;i++){
         Menu_Smooth_Animation[i].x=0;
     }
 }
+
 /*
     @函数 Page_Footnotes
     @brief 自适应屏幕右下角角标绘制
@@ -773,6 +700,7 @@ void MenuSYS_SetCounter() {
         *Slide_space[Slide_space_Scroll].x = 0;
     }
 }
+
 /*
     @函数 Next_Menu
     @brief 多级菜单跳转初始化参数

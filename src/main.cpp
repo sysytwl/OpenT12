@@ -6,22 +6,13 @@ uint8_t POWER_ADC_PIN, uint8_t POWER_ADC_VCC_R1, uint8_t POWER_ADC_R2_GND
 void setup() {
     Serial.begin(115200);
     //noInterrupts();
-    ChipMAC = ESP.getEfuseMac();
-    sprintf(CompileTime, "%s %s", __DATE__, __TIME__);
-    for (uint8_t i = 0;i < 6;i++) {
-        sprintf(ChipMAC_S + i * 3, "%02X%s", ((uint8_t*)&ChipMAC)[i], (i != 5) ? ":" : "");
-    }
 
-    ////////////////////////////初始化软件/////////////////////////////
-    FilesSystemInit(); //启动文件系统，并读取存档
-    shellInit(); //初始化命令解析器
-    //BLE_Init(); //初始化蓝牙（可选）
-    SetSound(BootSound); //播放音效
-    System_UI_Init(); //初始化UI
+    Beeper.SetSound(BootSound);
 }
 
 void loop() {
-    Inputs.KeyTick(data);
+    Inputs.KeyUpdate(key_data);
+
     TimerEventLoop(); //更新系统事件
     PlaySoundLoop();
     SYS_StateCode_Update(); //更新状态码

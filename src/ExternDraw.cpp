@@ -7,54 +7,6 @@
 
 
 
-void externdraw::EnterLogo(void) {
-    float rate ,i=1;
-    int x, y, w;
-    uint8_t flag = 0;
-
-    while(flag!=2) {
-        externdraw::Clear();
-        
-        switch (flag) {
-        case 0:
-            if (i < 80) i += 0.3 * i;
-            else flag++;
-            break;
-        case 1:
-            if (i > 64) i -= 0.05 * i;
-            else flag++;
-            break;
-        }
-
-        rate = i / 128.0;
-        w = 170 * rate;
-        x = (128 - w) / 2;
-        y = (64 - i - 1) / 2;
-        externdraw::Draw_Slow_Bitmap_Resize(x, y, Logo2, 170, 128, w, i);
-        // Draw_Slow_Bitmap_Resize(x, y, Logo_RoboBrave, 128, 128, w, i);
-        externdraw::Display();
-    }
-
-    for (int16_t xx=-128;xx<128;xx+=12) {
-        Clear();
-        //绘制Logo
-        Disp.setDrawColor(1);
-        Draw_Slow_Bitmap_Resize(x, y, Logo2, 170, 128, w, i);
-        // Draw_Slow_Bitmap_Resize(x, y, Logo_RoboBrave, 128, 128, w, i);
-        //转场特效
-        Disp.setBitmapMode(1);
-        Disp.setDrawColor(0);
-
-        Disp.drawXBM(xx, 0, 128, 64, TranAnimation2);
-        if (xx > 0) Disp.drawBox(0, 0, xx, 64);
-
-        Disp.setBitmapMode(0);
-        Display();
-    }
-    Disp.setDrawColor(1);
-
-}
-
 void externdraw::Clear(void) {
     _disp.clearBuffer();
 }
@@ -63,6 +15,38 @@ void externdraw::Display(void) {
     _disp.sendBuffer();
     DisplayFlashTick++;
 }
+
+void externdraw::UpdateOLEDLightLevel(void) {
+    _disp.sendF("c",0x81);  //向SSD1306发送指令：设置内部电阻微调
+    _disp.sendF("c",(uint8_t)); //微调范围（0-255）
+}
+
+// void Update_OLED_Flip(void) {
+//     Disp.setFlipMode(ScreenFlip);
+//     if (Menu_System_State) PopMsg_ScreenFlip();
+// }
+
+// void PopMsg_RotaryDirection(void) {
+//     char buffer[20];
+//     sprintf(buffer, "编码器:%s", (RotaryDirection == true) ? "顺时针" : "逆时针");
+//     Pop_Windows(buffer);
+//     delay(500);
+// }
+
+// void PopMsg_ScreenFlip(void) {
+//     char buffer[20];
+//     sprintf(buffer, "%s", (ScreenFlip == true) ? "翻转显示" : "正常显示");
+//     Pop_Windows(buffer);
+//     delay(500);
+// }
+
+// void PopMsg_ListMode(void) {
+//     char buffer[20];
+//     sprintf(buffer, "%s", (MenuListMode == true) ? "列表模式" : "图标模式");
+//     Pop_Windows(buffer);
+//     delay(500);
+//     Next_Menu();
+// }
 
 void externdraw::Draw_Utf(int x, int y, const char* s) {
     // Disp.setCursor(x,y + 1);
