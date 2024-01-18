@@ -1,7 +1,7 @@
 #ifndef beep_h
 #define beep_h
 
-//#include <Arduino.h>
+#include <Arduino.h>
 
 class beeper {
 public:
@@ -22,7 +22,7 @@ public:
         PlayTones_Schedule = 0;
     }
 
-    void ICACHE_RAM_ATTR PlaySoundTick(void) {
+    void ICACHE_RAM_ATTR SoundUpdate(void) {
         if (!_volume) {
             MySound = NULL;
             SetTone(0);

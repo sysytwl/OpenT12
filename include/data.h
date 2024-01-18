@@ -1,7 +1,7 @@
 #ifndef data_h
 #define data_h
 
-#include <Arduino.h>
+#include <stdint.h>
 
 struct KeyData {
   uint16_t lxAxisValue;
@@ -28,7 +28,7 @@ struct SystemStatus{
   bool UnderVoltageEvent = false;
   bool ERROREvent = false;
   bool SleepEvent = false;
-  float SYS_Voltage = 0;
+  float voltage = 0;
   uint8_t SYSKey = 0;
   char* Status_Mes[]={"错误","正常",};
 } sys_status;
@@ -40,7 +40,12 @@ struct SystemInfo {
 } sys_info;
 
 struct PinConfig {
-
+  int8_t left_x_axis_pin = left_x_axis_pin;
+  int8_t left_y_axis_pin = left_x_axis_pin;
+  int8_t left_button_pin = left_y_axis_pin;
+  int8_t right_x_axis_pin = right_x_axis_pin;
+  int8_t right_y_axis_pin = right_y_axis_pin;
+  int8_t right_button_pin = right_button_pin;
 } pin_config;
 
 struct SystemConfig {

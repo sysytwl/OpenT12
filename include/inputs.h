@@ -2,7 +2,6 @@
 #define inputs_h
 
 #include <OneButton.h>
-#include <stdint.h>
 #include "MathFun.h"
 #include "data.h"
 
@@ -10,12 +9,9 @@
 
 class inputs {
 public:
-
     inputs(uint8_t button_pin, uint8_t x_axis_pin, uint8_t y_axis_pin): RButton(button_pin, true, true){
         pinMode(x_axis_pin, INPUT);
         pinMode(y_axis_pin, INPUT);
-
-        pinMode(POWER_ADC_PIN, INPUT);
 
         RButton.attachClick(sys_Counter_click);
         RButton.attachDoubleClick(sys_Counter_doubleclick);
@@ -24,8 +20,8 @@ public:
         RButton.setClickTicks(30);
         RButton.setPressTicks(300);
 
-        _x_axis_pin = x_axis_pin
-        _y_axis_pin = y_axis_pin
+        _x_axis_pin = x_axis_pin;
+        _y_axis_pin = y_axis_pin;
     };
 
     void sys_Counter_click(void){
@@ -55,20 +51,9 @@ public:
         data.key1 = VituralKey(data.rxAxisValue);
     }
 
-    void Get_MainPowerVoltage(void) {
-        if (millis() - _CoolTimer > 100) {
-            //uint16_t POWER_ADC = analogRead(POWER_ADC_PIN);
-            double TipADC_V_R2 = analogReadMilliVolts(POWER_ADC_PIN) / 1000.0;
-            //double   TipADC_V_R2 = ESP32_ADC2Vol(POWER_ADC);
-            double   TipADC_V_R1 = (TipADC_V_R2 * POWER_ADC_VCC_R1) / POWER_ADC_R2_GND;
-            SYS_Voltage = TipADC_V_R1 + TipADC_V_R2;
-            _CoolTimer = millis();
-        }
-    }
-
 private:
     bool _use_KFP;
-    uint32_t _CoolTimer = 0;
+
     bool CounterChanged = false;
     uint8_t _x_axis_pin, _y_axis_pin;
 
@@ -143,9 +128,6 @@ private:
      * @return 无
      */
     static void Write_RButton_FIFO(uint8_t State) {
-        //重置事件计时器
-        TimerUpdateEvent();
-        
         RButton_FIFO[RButton_FIFO_pwrite] = State;
         printf("FIFO写入[%d]=%d\n", RButton_FIFO_pwrite, State);
         //写指针移位

@@ -1,7 +1,7 @@
 #include "main.h"
 #include <Arduino.h>
 
-uint8_t POWER_ADC_PIN, uint8_t POWER_ADC_VCC_R1, uint8_t POWER_ADC_R2_GND
+
 
 void setup() {
     Serial.begin(115200);
@@ -13,10 +13,9 @@ void setup() {
 void loop() {
     Inputs.KeyUpdate(key_data);
 
-    TimerEventLoop(); //更新系统事件
-    PlaySoundLoop();
-    SYS_StateCode_Update(); //更新状态码
-    ShellLoop(void);
+    Beeper.SoundUpdate();
+    Events.StateUpdate(sys_status, sys_config);
+    //ShellLoop();
     System_UI(); //刷新UI
 }
 

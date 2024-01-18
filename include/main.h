@@ -7,7 +7,6 @@
 #include "Event.h"
 #include "Menu.h"
 #include "Calibration.h"
-#include "Bezier.h"
 #include "FilesSystem.h"
 #include "qrcode.h"
 #include "Bitmap.h"
@@ -32,12 +31,12 @@
 #define y_axis_pin 35
 #define button_pin 0
 // External Joysticks
-#define left_x_axis_pin 34
-#define left_y_axis_pin 35
-#define left_button_pin 0
-#define right_x_axis_pin 34
-#define right_y_axis_pin 35
-#define right_button_pin 0
+#define left_x_axis_pin -1
+#define left_y_axis_pin -1
+#define left_button_pin -1
+#define right_x_axis_pin -1
+#define right_y_axis_pin -1
+#define right_button_pin -1
 
 // Main Power Voltage
 #define POWER_ADC_VCC_R1 10
@@ -52,3 +51,4 @@ beeper Beeper(beep_pin, beep_chennel); //蜂鸣器
 inputs Inputs(button_pin, x_axis_pin, y_axis_pin); // keys and joysticks
 externdraw ExternDraw(Beeper);
 filesystem FileSystem(ExternDraw);
+events Events(POWER_ADC_PIN, POWER_ADC_VCC_R1, POWER_ADC_R2_GND);
