@@ -1,12 +1,13 @@
 #ifndef ExternDraw_h
 #define ExternDraw_h
 
+#include <stdint.h>
 #include "Beep.h"
 #include <U8g2lib.h>
 
 class externdraw {
 public:
-    externdraw(beeper &Bepper): _disp(U8G2_R0, /* reset=*/ U8X8_PIN_NONE) {
+    externdraw(beeper &Bepper): _disp(U8G2_R0, /* reset=*/ U8X8_PIN_NONE), _Bepper(Bepper) {
         //初始化OLED
         _disp.begin();
         // Disp.setBusClock(921600);
@@ -15,9 +16,9 @@ public:
         _disp.setFontPosTop();
         _disp.setFont(u8g2_font_wqy12_t_gb2312);
         _disp.setDrawColor(1);
-        _disp.setFontMode(1)
+        _disp.setFontMode(1);
 
-        _Bepper = *Beeper; // value <- *address
+        //_Bepper = Beeper; // value <- *address?
     }
 
     void EnterLogo(void);
@@ -40,8 +41,9 @@ public:
     void DrawMsgBox(const char* s);
     void DrawHighLightText(int x, int y, const char* s);
 
-
     void TextEditor(const char* title, char* text);
+
+    void Pop_Windows(const char* s);
     
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C _disp; // (U8G2_R0, /* reset=*/ U8X8_PIN_NONE)
@@ -49,7 +51,7 @@ private:
     // U8G2_SSD1306_128X64_NONAME_F_4W_HW_SPI Disp(U8G2_R0, /* cs=*/ 5, /* dc=*/ 13, /* reset=*/ 15);
     // U8G2_ST7920_128X64_F_HW_SPI Disp(U8G2_R0, 5, 15);
     // U8G2_ST7920_128X64_F_SW_SPI Disp(U8G2_R0, /*clock*/18, /*data*/23, /*cs*/5, /*reset*/15);
-    beeper _Bepper;
+    beeper &_Bepper;
 
     uint8_t DisplayFlashTick = 0;
 };

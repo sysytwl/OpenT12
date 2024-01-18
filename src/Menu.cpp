@@ -808,50 +808,6 @@ void Next_Menu() {
 }
 
 /*
-    @函数 Pop_Windows
-    @brief 自适应文本大小信息弹窗
-    @param (char* s):字符串首地址
-    
-*/
-void Pop_Windows(const char* s) {
-    // Disp.setCursor(0, 0);
-    // Disp.print(s);
-    // Display();
-    //Set_Font_Size(2);
-    int w = Get_UTF8_Ascii_Pix_Len(1,s) + 2;
-    int h = 12;
-    // for (int i = 5;i > 0;i--) {
-    //     //Set_Font_Size(i);
-    //     w = CNSize * Get_Max_Line_Len(s) * Get_Font_Size() / 2;
-    //     //h = CNSize * Get_Font_Size() * Get_Str_Next_Line_O(s);
-    //     if (w < SCREEN_COLUMN && h < SCREEN_ROW) break;
-    // }
-    int x = (SCREEN_COLUMN - w) / 2;
-    int y = (SCREEN_ROW - h) / 2;
-
-    Disp.setDrawColor(0);
-    Blur(0, 0, SCREEN_COLUMN, SCREEN_ROW, 3, 66 * *Switch_space[SwitchSpace_SmoothAnimation]); //<=15FPS以便人眼察觉细节变化
-
-    int ix = 0;
-    for (int i = 1;i <= 10;i++) {
-        //震荡动画
-        if (*Switch_space[SwitchSpace_SmoothAnimation]) ix = (10 * cos((i * 3.14) / 2.0)) / i;
-
-        Disp.setDrawColor(0);
-        Blur(0, 0, SCREEN_COLUMN, SCREEN_ROW, 3, 0);
-        Disp.drawFrame(x - 1 + ix, y - 3, w + 1, h + 3);
-        Disp.setDrawColor(1);
-        Disp.drawRBox(x + ix, y - 2, w, h + 2 ,2);
-        Disp.setDrawColor(0);
-        Draw_Utf(x + 1 + ix, y - 1, s);
-        Disp.setDrawColor(1);
-        Display();
-        delay(20 * *Switch_space[SwitchSpace_SmoothAnimation]);
-    }
-    //Set_Font_Size(1);
-}
-
-/*
     @函数 Run_Menu_Id
     @brief 按照菜单项预设的参数执行命令
     @param uint8_t lid 菜单层对象id 

@@ -2,6 +2,7 @@
 #define inputs_h
 
 #include <OneButton.h>
+#include <stdint.h>
 #include "MathFun.h"
 #include "data.h"
 
@@ -10,7 +11,7 @@
 class inputs {
 public:
 
-    inputs(uint8_t BUTTON_PIN, uint8_t x_axis_pin, uint8_t y_axis_pin): RButton(BUTTON_PIN){
+    inputs(uint8_t button_pin, uint8_t x_axis_pin, uint8_t y_axis_pin): RButton(button_pin, true, true){
         pinMode(x_axis_pin, INPUT);
         pinMode(y_axis_pin, INPUT);
 
@@ -22,7 +23,10 @@ public:
         RButton.setDebounceTicks(25);
         RButton.setClickTicks(30);
         RButton.setPressTicks(300);
-    }
+
+        _x_axis_pin = x_axis_pin
+        _y_axis_pin = y_axis_pin
+    };
 
     void sys_Counter_click(void){
         Write_RButton_FIFO(1);
@@ -36,7 +40,7 @@ public:
         Write_RButton_FIFO(3);
     }
 
-    void KeyTick(PacketData &data) { // take configs as well, used for external joysticks and 
+    void KeyUpdate(KeyData &data) { // take configs as well, used for external joysticks and 
         // Digital
         RButton.tick();
         data.key = Read_RButton_FIFO();
@@ -44,8 +48,8 @@ public:
         // Analogue
         //data.lxAxisValue    = MapAdjJoystick(analogRead(32), false);
         //data.lyAxisValue    = MapAdjJoystick(analogRead(33), false);
-        data.rxAxisValue    = MapAdjJoystick(GetADC(x_axis), false);
-        data.ryAxisValue    = MapAdjJoystick(GetADC(y_axis), false);
+        data.rxAxisValue    = MapAdjJoystick(GetADC(_x_axis_pin), false);
+        data.ryAxisValue    = MapAdjJoystick(GetADC(_y_axis_pin), false);
 
         // Vitural key
         data.key1 = VituralKey(data.rxAxisValue);
@@ -66,6 +70,7 @@ private:
     bool _use_KFP;
     uint32_t _CoolTimer = 0;
     bool CounterChanged = false;
+    uint8_t _x_axis_pin, _y_axis_pin;
 
     KFP KFP_Temp = {0.02,0,0,0,0.01,4.5};
     OneButton RButton;

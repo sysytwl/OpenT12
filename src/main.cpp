@@ -6,8 +6,6 @@ uint8_t POWER_ADC_PIN, uint8_t POWER_ADC_VCC_R1, uint8_t POWER_ADC_R2_GND
 void setup() {
     Serial.begin(115200);
     //noInterrupts();
-
-    ////////////////////////////初始化硬件/////////////////////////////
     ChipMAC = ESP.getEfuseMac();
     sprintf(CompileTime, "%s %s", __DATE__, __TIME__);
     for (uint8_t i = 0;i < 6;i++) {
@@ -38,17 +36,7 @@ void About(void) {
     //生成项目QRCode
     QRCode qrcode;
     uint8_t qrcodeData[qrcode_getBufferSize(3)];
-
-    switch (Language) {
-        case LANG_Chinese:
-            qrcode_initText(&qrcode, qrcodeData, 3, 0, "https://github.com/createskyblue/OpenT12");
-        break;
-
-        default:
-            qrcode_initText(&qrcode, qrcodeData, 3, 0, "https://github.com/createskyblue/OpenT12");
-        break;
-    }
-
+    qrcode_initText(&qrcode, qrcodeData, 3, 0, "https://github.com/createskyblue/OpenT12");
     Clear();
 
     uint8_t x_offset = (SCREEN_COLUMN - qrcode.size*2)/2;
@@ -83,5 +71,4 @@ void About(void) {
     while(!sys_KeyProcess()) {
         Display();
     }
-
 }

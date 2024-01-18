@@ -5,10 +5,11 @@
 #include "SPIFFS.h"
 #include "data.h"
 #include "ExternDraw.h"
+#include "log.h"
 
 class filesystem {
 public:
-    filesystem(externdraw &ExternDraw) {
+    filesystem(externdraw &ExternDraw): _ExternDraw(ExternDraw) {
         noInterrupts();
         if (!SPIFFS.begin(true)) {
             Log(LOG_OK,"文件系统初始化完成！");
@@ -16,20 +17,20 @@ public:
         }
         interrupts();
 
-        _ExternDraw = *ExternDraw;
+        //_ExternDraw = ExternDraw;
     }
 
     void save(void) {
         noInterrupts();
-        //Pop_Windows("保存中 请勿切断电源");
-        _ExternDraw.DrawMsgBox("保存中"); //软盘图标
+        //_ExternDraw.Pop_Windows("保存中 请勿切断电源");
+        _ExternDraw.DrawMsgBox("保存中 请勿切断电源"); //软盘图标
         _ExternDraw.Draw_Slow_Bitmap_Resize(128 - 28 - 4, 64 - 28 - 4, Save + 1, Save[0], Save[0], 28, 28);
         _ExternDraw.Display();
 
-        File file = SPIFFS.open(SYS_SVAE_PATH,FILE_WRITE);
+        file = SPIFFS.open(SYS_SAVE_PATH, FILE_WRITE);
         if (!file) {
-            Log(LOG_ERROR, "存档写入失败!");
-            Pop_Windows("写入失败");
+            Log(LOG_ERROR, "写入失败!");
+            _ExternDraw.Pop_Windows("写入失败");
             return;
         }
 
@@ -42,13 +43,13 @@ public:
         file.write((uint8_t*)&ScreenFlip                 , sizeof(ScreenFlip                 ));
         file.write((uint8_t*)&SmoothAnimation_Flag       , sizeof(SmoothAnimation_Flag       ));
         file.write((uint8_t*)&ScreenBrightness           , sizeof(ScreenBrightness           ));
-        //file.write((uint8_t*)&OptionStripFixedLength_Flag, sizeof(OptionStripFixedLength_Flag));
+
         file.write((uint8_t*)&KFP_Temp, sizeof(KFP_Temp));
         file.write((uint8_t*)&Volume, sizeof(Volume));
         file.write((uint8_t*)&RotaryDirection, sizeof(RotaryDirection));
-        //file.write((uint8_t*)&HandleTrigger, sizeof(HandleTrigger));
+
         file.write((uint8_t*)&UndervoltageAlert, sizeof(UndervoltageAlert));
-        file.write((uint8_t*)&Language, sizeof(Language));
+        file.write((uint8_t*) &sys_config, sizeof(sys_config));
         file.close();
         Log(LOG_OK, "存档保存成功!");
         interrupts(); //启用中断
@@ -60,10 +61,10 @@ public:
         _ExternDraw.Draw_Slow_Bitmap(128 - 28 - 4, 64 - 28 - 4, IMG_Load, 28, 28);
         _ExternDraw.Display();
 
-        File file = SPIFFS.open(SYS_SVAE_PATH);
+        File file = SPIFFS.open(SYS_SAVE_PATH);
         if (!file.available()) {
             Log(LOG_ERROR,"存档不存在！");
-            Pop_Windows("存档不存在！");
+            _ExternDraw.Pop_Windows("存档不存在！");
             file.close();
             return;
         }
@@ -77,8 +78,8 @@ public:
 
         //判断存档版本，载入不同版本的存档可能会导致致命错误
         if (memcmp(CompileTime, FSCompileTime, sizeof(FSCompileTime))) {
-            Log(LOG_ERROR, "存档版本不一致，拒绝加载存档！");
-            Pop_Windows("存档版本不一致");
+            Log(LOG_ERROR, "存档版本不一致");
+            _ExternDraw.Pop_Windows("存档版本不一致");
             return;
         }
 
@@ -105,9 +106,9 @@ public:
     }
 
 private:
-    //存档路径
-    char SYS_SVAE_PATH[20] = "/MotionTX.sav";
-    externdraw _ExternDraw;
+    char SYS_SAVE_PATH[] = "/MotionTX.sav"; //存档路径
+    File file;
+    externdraw &_ExternDraw;
 };
 
 #endif

@@ -23,7 +23,6 @@ void Page_Footnotes(int a, int b);
 void Text_Reader(char* s);
 void Run_Menu_Id(uint8_t lid, uint8_t id);
 void Next_Menu(void);
-void Pop_Windows(const char* s);
 void Exit_Menu_System(void);
 void Save_Exit_Menu_System(void);
 void JumpWithTitle(void);

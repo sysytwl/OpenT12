@@ -1,4 +1,11 @@
 #include "ExternDraw.h"
+#define CNSize 12
+#define SCREEN_COLUMN 128
+#define SCREEN_ROW    64
+#define SCREEN_PAGE_NUM 8
+#define SCREEN_FONT_ROW 4
+
+
 
 void externdraw::EnterLogo(void) {
     float rate ,i=1;
@@ -48,11 +55,9 @@ void externdraw::EnterLogo(void) {
 
 }
 
-
 void externdraw::Clear(void) {
     _disp.clearBuffer();
 }
-
 
 void externdraw::Display(void) {
     _disp.sendBuffer();
@@ -177,7 +182,6 @@ void externdraw::Draw_Slow_Bitmap_Resize(int x, int y, uint8_t *bitmap, int w1,i
 	}
 }
 
-
 //绘制屏保-密集运算线条
 void externdraw::DrawIntensiveComputingLine(void) {
     static uint8_t Line[4];
@@ -190,6 +194,7 @@ void externdraw::DrawIntensiveComputingLine(void) {
         }
     }
 }
+
 //FP 密集运算屏保
 void externdraw::DrawIntensiveComputing(void) {
     float calculate;
@@ -204,6 +209,7 @@ void externdraw::DrawIntensiveComputing(void) {
     //SetTone(64 + calculate * 64 + rand() % 16 - 8);
     SetTone(1500 + calculate * 500 + rand() % 64 - 32 - (((millis() / 1000) % 2 == 1) ? 440 : 0));
 }
+
 /*** 
  * @description: 在屏幕中心绘制文本
  * @param {*}
@@ -226,6 +232,7 @@ void externdraw::DrawMsgBox(const char* s) {
     Draw_Utf(x + 1 , y - 1, s);
     _disp.setDrawColor(1);
 }
+
 /*** 
  * @description: 绘制高亮文本
  * @param {int} x
@@ -382,4 +389,48 @@ void externdraw::TextEditor(const char* title, char* text) {
             break;
         }
     }
+}
+
+/*
+    @函数 Pop_Windows
+    @brief 自适应文本大小信息弹窗
+    @param (char* s):字符串首地址
+    
+*/
+void externdraw::Pop_Windows(const char* s) {
+    // Disp.setCursor(0, 0);
+    // Disp.print(s);
+    // Display();
+    //Set_Font_Size(2);
+    int w = Get_UTF8_Ascii_Pix_Len(1,s) + 2;
+    int h = 12;
+    // for (int i = 5;i > 0;i--) {
+    //     //Set_Font_Size(i);
+    //     w = CNSize * Get_Max_Line_Len(s) * Get_Font_Size() / 2;
+    //     //h = CNSize * Get_Font_Size() * Get_Str_Next_Line_O(s);
+    //     if (w < SCREEN_COLUMN && h < SCREEN_ROW) break;
+    // }
+    int x = (SCREEN_COLUMN - w) / 2;
+    int y = (SCREEN_ROW - h) / 2;
+
+    _disp.setDrawColor(0);
+    Blur(0, 0, SCREEN_COLUMN, SCREEN_ROW, 3, 66 * *Switch_space[SwitchSpace_SmoothAnimation]); //<=15FPS以便人眼察觉细节变化
+
+    int ix = 0;
+    for (int i = 1;i <= 10;i++) {
+        //震荡动画
+        if (*Switch_space[SwitchSpace_SmoothAnimation]) ix = (10 * cos((i * 3.14) / 2.0)) / i;
+
+        _disp.setDrawColor(0);
+        Blur(0, 0, SCREEN_COLUMN, SCREEN_ROW, 3, 0);
+        _disp.drawFrame(x - 1 + ix, y - 3, w + 1, h + 3);
+        _disp.setDrawColor(1);
+        _disp.drawRBox(x + ix, y - 2, w, h + 2 ,2);
+        _disp.setDrawColor(0);
+        Draw_Utf(x + 1 + ix, y - 1, s);
+        _disp.setDrawColor(1);
+        Display();
+        delay(20 * *Switch_space[SwitchSpace_SmoothAnimation]);
+    }
+    //Set_Font_Size(1);
 }
