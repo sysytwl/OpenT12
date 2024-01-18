@@ -6,7 +6,6 @@
 #include "ExternDraw.h"
 #include "Event.h"
 #include "Menu.h"
-#include "Calibration.h"
 #include "FilesSystem.h"
 #include "qrcode.h"
 #include "Bitmap.h"
@@ -44,8 +43,6 @@
 #define POWER_ADC_PIN 36
 
 
-
-void About(void);
 
 beeper Beeper(beep_pin, beep_chennel); //蜂鸣器
 inputs Inputs(button_pin, x_axis_pin, y_axis_pin); // keys and joysticks

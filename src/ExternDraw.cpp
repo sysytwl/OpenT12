@@ -22,7 +22,7 @@ void externdraw::UpdateOLEDLightLevel(void) {
 }
 
 // void Update_OLED_Flip(void) {
-//     Disp.setFlipMode(ScreenFlip);
+//     _disp.setFlipMode(ScreenFlip);
 //     if (Menu_System_State) PopMsg_ScreenFlip();
 // }
 
@@ -49,8 +49,8 @@ void externdraw::UpdateOLEDLightLevel(void) {
 // }
 
 void externdraw::Draw_Utf(int x, int y, const char* s) {
-    // Disp.setCursor(x,y + 1);
-    // Disp.print(s);
+    // _disp.setCursor(x,y + 1);
+    // _disp.print(s);
     _disp.drawUTF8(x,y+1,s);
 }
 
@@ -61,8 +61,8 @@ void externdraw::Blur(int sx, int sy, int ex, int ey, int f,int delayMs) {
 	for (int i = 0;i < f;i++) {
 		for (int y = 0; y < ey; y++) {
 			for (int x = 0; x < ex; x++) {
-                if (x % 2 == y % 2 && x % 2 == 0 && x >= sx && x <= ex && y >= sy && y <= ey) Disp.drawPixel(x + (i > 0 && i < 3), y + (i > 1));
-                //else Disp.drawPixel(x + (i > 0 && i < 3), y + (i > 1), 0);
+                if (x % 2 == y % 2 && x % 2 == 0 && x >= sx && x <= ex && y >= sy && y <= ey) _disp.drawPixel(x + (i > 0 && i < 3), y + (i > 1));
+                //else _disp.drawPixel(x + (i > 0 && i < 3), y + (i > 1), 0);
 			}
 		}
 		if (delayMs) {
@@ -72,6 +72,7 @@ void externdraw::Blur(int sx, int sy, int ex, int ey, int f,int delayMs) {
 	}
 		
 }
+
 /*
 @ 作用：画滚动条
 */
@@ -79,22 +80,22 @@ void externdraw::Draw_Scale(int x, int y, int w, int h, int s, int v) {
   //((h / s >= 4)?(h / (float)s):4)
 	_disp.setDrawColor(1);
 	if (w < h) {
-        Disp.drawVLine(x + w / 2.0, y, h);
+        _disp.drawVLine(x + w / 2.0, y, h);
 		if (s < h && h / s >= 4) for (int i = 0;i < s + 1;i++) {
-            if (i % 2) Disp.drawHLine(x + w / (float)s, y + (h / (float)s) * i, w / 2.0 + 1);
-            else Disp.drawHLine(x, y + (h / (float)s) * i, w);
+            if (i % 2) _disp.drawHLine(x + w / (float)s, y + (h / (float)s) * i, w / 2.0 + 1);
+            else _disp.drawHLine(x, y + (h / (float)s) * i, w);
 		}
 		if(s>h) s=h;
-        Disp.drawBox(x, v, w, h / (float)s);
+        _disp.drawBox(x, v, w, h / (float)s);
 	}
 	else {
-        Disp.drawHLine(x, y + h / 2.0, w);
+        _disp.drawHLine(x, y + h / 2.0, w);
 		if (s < h && h / s >= 4) for (int i = 0;i < s + 1;i++) {
-            if (i % 2) Disp.drawVLine(x + (w / (float)s) * i, y + (h / (float)s), h / 2.0 + 1);
-            else Disp.drawVLine(x + (w / (float)s) * i, y, h);
+            if (i % 2) _disp.drawVLine(x + (w / (float)s) * i, y + (h / (float)s), h / 2.0 + 1);
+            else _disp.drawVLine(x + (w / (float)s) * i, y, h);
 		}
 		if(s>w) s=w;
-		Disp.drawBox(v, y, w / (float)s, w);
+		_disp.drawBox(v, y, w / (float)s, w);
 	}
 }
 
@@ -126,8 +127,7 @@ void externdraw::Draw_Pixel_Resize(int x, int y, int ox,int oy,int w, int h) {
     _disp.drawBox(ox + xi * w, oy + yi * h, w, h);
 }
 
-void externdraw::Draw_Slow_Bitmap(int x, int y, const unsigned char* bitmap, unsigned char w, unsigned char h)
-{
+void externdraw::Draw_Slow_Bitmap(int x, int y, const unsigned char* bitmap, unsigned char w, unsigned char h) {
     uint8_t color = _disp.getDrawColor();
     int xi, yi, intWidth = (w + 7) / 8;
     for (yi = 0; yi < h; yi++) {
@@ -188,7 +188,7 @@ void externdraw::DrawIntensiveComputing(void) {
 
     calculate = sin(millis() / 4000.0);
     //模拟噪点
-    for (int i = 0; i < calculate * 256 + 256; i++)  Disp.drawPixel(rand() % 128, rand() % 64);
+    for (int i = 0; i < calculate * 256 + 256; i++)  _disp.drawPixel(rand() % 128, rand() % 64);
     //波浪警告声
     //SetTone(64 + calculate * 64 + rand() % 16 - 8);
     SetTone(1500 + calculate * 500 + rand() % 64 - 32 - (((millis() / 1000) % 2 == 1) ? 440 : 0));
@@ -268,11 +268,11 @@ void externdraw::DrawStatusBar(bool color) {
     //Draw_Slow_Bitmap(map(PID_Setpoint, 0, 500, 2, 103) - 4, 54, PositioningCursor, 8, 8);
 
     _disp.setCursor(2,53);
-    //Disp.printf("%.0f",PID_Setpoint);
+    //_disp.printf("%.0f",PID_Setpoint);
 
     _disp.setCursor(105, 53);
     //显示输出功率 百分比
-    // Disp.printf("%d%%", map(POWER, 0, 255, 0, 100));
+    // _disp.printf("%d%%", map(POWER, 0, 255, 0, 100));
     //显示真实功率
     _disp.printf("%.0fW", SYS_Voltage * SYS_Current);
 
@@ -382,8 +382,8 @@ void externdraw::TextEditor(const char* title, char* text) {
     
 */
 void externdraw::Pop_Windows(const char* s) {
-    // Disp.setCursor(0, 0);
-    // Disp.print(s);
+    // _disp.setCursor(0, 0);
+    // _disp.print(s);
     // Display();
     //Set_Font_Size(2);
     int w = Get_UTF8_Ascii_Pix_Len(1,s) + 2;
@@ -417,4 +417,37 @@ void externdraw::Pop_Windows(const char* s) {
         delay(20 * *Switch_space[SwitchSpace_SmoothAnimation]);
     }
     //Set_Font_Size(1);
+}
+
+/*
+    @函数 Page_Footnotes
+    @brief 自适应屏幕右下角角标绘制
+    @param int a 分子
+    @param int b 分母
+*/
+void externdraw::Page_Footnotes(int a, int b) {
+    char buffer[20];
+    uint8_t w = (Get_Dec_Deep(a) + Get_Dec_Deep(b) + 3) * 6;
+    uint8_t x = SCREEN_COLUMN - 8 - w;
+    uint8_t y = SCREEN_ROW - 12;
+
+    if (millis() < pages_Tip_Display_timer + pages_Tip_Display_Timeout) {
+        //绘制白色底色块
+        _disp.setDrawColor(1);
+        _disp.drawRBox(x + 1, y - 1, w, 13 ,1);
+        //绘制下标文字
+        _disp.setDrawColor(0);
+        _disp.setCursor(x,y + 1);
+        sprintf(buffer,"[%d/%d]", a, b);
+        _disp.print(buffer);
+    }
+    //恢复颜色设置
+    _disp.setDrawColor(1);
+}
+
+void externdraw::Draw_APP(int x, int y, uint8_t* bitmap) {
+    _disp.setDrawColor(1);
+    _disp.drawRBox(x - 3, y - 3, 42 + 6, 42 + 6, 4);
+
+    Draw_Slow_Bitmap_Resize(x, y, bitmap + 1, bitmap[0], bitmap[0], 42, 42);
 }

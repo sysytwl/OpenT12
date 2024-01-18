@@ -38,6 +38,8 @@ public:
     void DrawHighLightText(int x, int y, const char* s);
     void TextEditor(const char* title, char* text);
     void Pop_Windows(const char* s);
+    void Page_Footnotes(int a, int b);
+    void Draw_APP(int x, int y, uint8_t* bitmap);
 
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C _disp; // (U8G2_R0, /* reset=*/ U8X8_PIN_NONE)

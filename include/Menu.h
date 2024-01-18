@@ -7,54 +7,25 @@ extern uint32_t pages_Tip_Display_timer;
 extern uint8_t Menu_JumpAndExit;
 extern uint8_t Menu_JumpAndExit_Level;
 
-void System_TipMenu_Init(void);
-void System_PIDMenu_Init(void);
-void System_Menu_Init(void);
-void System_UI_Init(void);
 void System_UI(void);
 
 int Get_Real_Menu_Level_Id(uint8_t id);
 int Get_Menu_Id(uint8_t lid, uint8_t id);
 
-
 void Menu_Control(void);
 void Draw_APP(int x, int y, char* bitmap);
-void Page_Footnotes(int a, int b);
-void Text_Reader(char* s);
+
 void Run_Menu_Id(uint8_t lid, uint8_t id);
 void Next_Menu(void);
 void Exit_Menu_System(void);
 void Save_Exit_Menu_System(void);
 void JumpWithTitle(void);
-void SmoothAnimationSystem_Clean(void);
 
 void Smooth_Animation_System(void);
+void About(void);
 
-void Update_OLED_Light_Level(void);
-void Update_OLED_Flip(void);
 
-void PopMsg_RotaryDirection(void);
-void PopMsg_ScreenFlip(void);
-void PopMsg_ListMode(void);
-void SYS_About(void);
 
-/*
-	@名称 Smooth_Animation
-	@变量
-		x    过渡值
-		last 上次的值
-		val 目标值
-		w    平滑权重
-*/
-struct Smooth_Animation {
-	float x;	 //过渡值
-	int last;	 //上次的值
-	int val;	 //目标值
-	float w; 	 //平滑权重
-	uint8_t a;   //是否允许累加
-	uint8_t b;   //选择过渡动画计算函数
-};
-extern struct Smooth_Animation Menu_Smooth_Animation[];
 /*
 	@名称 Slide_Bar
 	@变量
@@ -69,6 +40,7 @@ struct Slide_Bar {
 	float max;
 	float step;
 };
+
 extern struct Slide_Bar Slide_space[];
 
 struct Menu_Level_System {
@@ -89,6 +61,3 @@ struct Menu_System {
 	uint8_t b; //附加参数_2 (0-jump_id) (4-滑动条：true?执行函数:无操作)
 	void (*function)();
 };
-
-extern struct Menu_System Menu[];
-extern struct Menu_Level_System MenuLevel[];
