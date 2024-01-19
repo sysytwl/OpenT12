@@ -245,225 +245,211 @@ struct Menu_Level_System MenuLevel[] = {
 #define Menu_NULL_OP                6
 
 struct Menu_System Menu[] = {
-    {0,0, Title_Menu_Op, "欢迎使用[朱雀]控制器", Menu_NULL_IMG, 0, 0, *Save_Exit_Menu_System},
-    {5,2, Jump_Menu_Op, "配对", IMG_BLE, 22, 0, Menu_NULL_F},
-    {2,5, F_Menu_Op, "手动添加", IMG_Files, 0, 0, Menu_NULL_F},
-    {5,2, Jump_Menu_Op, "蓝牙", IMG_BLE, 22, 0, Menu_NULL_F},
-    {2,3, F_Menu_Op, "校准", Set9, 0, 0, Menu_NULL_F},
-    {19,4, Jump_Menu_Op, "卡尔曼滤波器", Menu_NULL_IMG, 20, 0, Menu_NULL_F },
-    {5,3, Progress_Bar_Menu_Op, "欠压提醒", Set6, Slide_space_UndervoltageAlert, 0, Menu_NULL_F},
-    {5,1, Jump_Menu_Op, "个性化", IMG_Pen, 6, 0, Menu_NULL_F},
-    {5,5, Jump_Menu_Op, "语言设置", Set_LANG, 13, 0, Menu_NULL_F},
-    {5,6, F_Menu_Op, "关于", QRC, 5, 5, *About},
-    {0,3, F_Menu_Op, "返回", Menu_NULL_IMG, 0, 0, *Save_Exit_Menu_System},
+    {0, 0, Title_Menu_Op, "欢迎使用[朱雀]控制器", Menu_NULL_IMG, 0, 0, *Save_Exit_Menu_System},
+    {0, 1, Jump_Menu_Op, "配对", IMG_BLE, 22, 0, Menu_NULL_F},
+    {0, 2, F_Menu_Op, "手动添加", IMG_Files, 0, 0, Menu_NULL_F},
+    {0, 3, Jump_Menu_Op, "蓝牙", IMG_BLE, 22, 0, Menu_NULL_F},
+    {0, 4, F_Menu_Op, "校准", Set9, 0, 0, Menu_NULL_F},
+    {0, 5, Jump_Menu_Op, "卡尔曼滤波器", Menu_NULL_IMG, 20, 0, Menu_NULL_F },
+    {0, 6, Progress_Bar_Menu_Op, "欠压提醒", Set6, Slide_space_UndervoltageAlert, 0, Menu_NULL_F},
+    {0, 7, Jump_Menu_Op, "个性化", IMG_Pen, 6, 0, Menu_NULL_F},
+    {0, 8, Jump_Menu_Op, "语言设置", Set_LANG, 13, 0, Menu_NULL_F},
+    {0, 9, F_Menu_Op, "关于", QRC, 5, 5, *About},
+    {0, 10, F_Menu_Op, "返回", Menu_NULL_IMG, 0, 0, *Save_Exit_Menu_System},
 
-    {22, 0, Title_Menu_Op, "蓝牙", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
-    {22, 1, Switch_Menu_Op, "状态", Menu_NULL_IMG, SwitchSpace_BLE_State, 0, Menu_NULL_F}, // <---
-    {22, 2, F_Menu_Op, "设备名称", Menu_NULL_IMG, 22, 2, Menu_NULL_F}, // <---
-    {22, 3, Jump_Menu_Op, "返回", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
+    {1, 0, Title_Menu_Op, "蓝牙", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
+    {1, 1, Switch_Menu_Op, "状态", Menu_NULL_IMG, SwitchSpace_BLE_State, 0, Menu_NULL_F}, // <---
+    {1, 2, F_Menu_Op, "设备名称", Menu_NULL_IMG, 22, 2, Menu_NULL_F}, // <---
+    {1, 3, Jump_Menu_Op, "返回", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
 
-    {20,0, Title_Menu_Op, "卡尔曼滤波器", Menu_NULL_IMG, 19, 4, Menu_NULL_F },
-    {20,1, Switch_Menu_Op, "启用状态", Menu_NULL_IMG, SwitchSpace_KFP, 0, Menu_NULL_F },
-    {20,2, Progress_Bar_Menu_Op, "过程噪声协方差", Menu_NULL_IMG, Slide_space_KFP_Q, 0, Menu_NULL_F },
-    {20,3, Progress_Bar_Menu_Op, "观察噪声协方差", Menu_NULL_IMG, Slide_space_KFP_R, 0, Menu_NULL_F },
-    {20,4, Jump_Menu_Op, "返回", Menu_NULL_IMG, 19, 4, Menu_NULL_F },
+    {2, 0, Title_Menu_Op, "卡尔曼滤波器", Menu_NULL_IMG, 19, 4, Menu_NULL_F },
+    {2, 1, Switch_Menu_Op, "启用状态", Menu_NULL_IMG, SwitchSpace_KFP, 0, Menu_NULL_F },
+    {2, 2, Progress_Bar_Menu_Op, "过程噪声协方差", Menu_NULL_IMG, Slide_space_KFP_Q, 0, Menu_NULL_F },
+    {2, 3, Progress_Bar_Menu_Op, "观察噪声协方差", Menu_NULL_IMG, Slide_space_KFP_R, 0, Menu_NULL_F },
+    {2, 4, Jump_Menu_Op, "返回", Menu_NULL_IMG, 19, 4, Menu_NULL_F },
 
-    { 6,0, Title_Menu_Op, "个性化", Menu_NULL_IMG, 5, 1, Menu_NULL_F},
-    { 7,4, Progress_Bar_Menu_Op, "屏幕亮度", IMG_Sun, Slide_space_ScreenBrightness, 1, *Update_OLED_Light_Level},
-    { 4,3, Progress_Bar_Menu_Op, "休眠触发(分)", Set11, Slide_space_SleepTime, 0, Menu_NULL_F},
-    { 8,0, Jump_Menu_Op, "面板设置", Menu_NULL_IMG, 7, 1, Menu_NULL_F},
-    { 6,2, Jump_Menu_Op, "声音设置", Set5, 10, 0, Menu_NULL_F},
-    { 6,5, Jump_Menu_Op, "返回", Set7, 5, 1, Menu_NULL_F},
+    {3, 0, Title_Menu_Op, "个性化", Menu_NULL_IMG, 5, 1, Menu_NULL_F},
+    {3, 4, Progress_Bar_Menu_Op, "屏幕亮度", IMG_Sun, Slide_space_ScreenBrightness, 1, *Update_OLED_Light_Level},
+    {3, 3, Progress_Bar_Menu_Op, "休眠触发(分)", Set11, Slide_space_SleepTime, 0, Menu_NULL_F},
+    {3, 0, Jump_Menu_Op, "面板设置", Menu_NULL_IMG, 7, 1, Menu_NULL_F},
+    {3, 2, Jump_Menu_Op, "声音设置", Set5, 10, 0, Menu_NULL_F},
+    {3, 5, Jump_Menu_Op, "返回", Set7, 5, 1, Menu_NULL_F},
 
-    { 13,0, Title_Menu_Op, "语言设置", Menu_NULL_IMG, 5, 5, Menu_NULL_F},
-    { 13,1, SingleBox_Menu_Op, "English", Lang_EN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
-    { 13,1, SingleBox_Menu_Op, "简体中文", Lang_CN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
+    {4, 0, Title_Menu_Op, "语言设置", Menu_NULL_IMG, 5, 5, Menu_NULL_F},
+    {4, 1, SingleBox_Menu_Op, "English", Lang_EN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
+    {4, 1, SingleBox_Menu_Op, "简体中文", Lang_CN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
  
-    { 8,0, Title_Menu_Op, "面板设置", Menu_NULL_IMG, 7, 1, Menu_NULL_F},
-    { 8,1, SingleBox_Menu_Op, "简约", Set17, SwitchSpace_PanelSettings, 0, *JumpWithTitle},
-    { 8,2, SingleBox_Menu_Op, "详细", Set18, SwitchSpace_PanelSettings, 1, *JumpWithTitle},
+    {5, 0, Title_Menu_Op, "面板设置", Menu_NULL_IMG, 7, 1, Menu_NULL_F},
+    {5, 1, SingleBox_Menu_Op, "简约", Set17, SwitchSpace_PanelSettings, 0, *JumpWithTitle},
+    {5, 2, SingleBox_Menu_Op, "详细", Set18, SwitchSpace_PanelSettings, 1, *JumpWithTitle},
  
-    { 10,0, Title_Menu_Op, "声音设置", Menu_NULL_IMG, 6, 2, Menu_NULL_F},
-    { 10,1, SingleBox_Menu_Op, "开启", Set5, SwitchSpace_Volume, true, *JumpWithTitle},
-    { 10,2, SingleBox_Menu_Op, "关闭", Set5_1, SwitchSpace_Volume, false, *JumpWithTitle},
+    {6, 0, Title_Menu_Op, "声音设置", Menu_NULL_IMG, 6, 2, Menu_NULL_F},
+    {6, 1, SingleBox_Menu_Op, "开启", Set5, SwitchSpace_Volume, true, *JumpWithTitle},
+    {6, 2, SingleBox_Menu_Op, "关闭", Set5_1, SwitchSpace_Volume, false, *JumpWithTitle},
 
 };
 
 //系统UI
 void System_UI(void) {
     if (Menu) {
-    if (!Menu_System_State) return;
-    _disp.clearBuffer();
-
-    //计算过渡动画
-    if (*Switch_space[SwitchSpace_SmoothAnimation]) Smooth_Animation_System();
-
-    //分别获取 菜单层、菜单项 索引值
-    real_Level_Id = Get_Real_Menu_Level_Id(MenuLevelId);
-    Pos_Id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x);
-
-    //若当前菜单层级没有开题图标化则使用普通文本菜单的模式进行渲染显示 若屏幕分辨率低于128*32 则强制启用文本菜单模式
-    if (!MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].a || MenuListMode || SCREEN_ROW <= 32) {
+        _disp.clearBuffer();
+        Smooth_Animation_System(); //计算过渡动画
 
         //分别获取 菜单层、菜单项 索引值
-        //int id = Get_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id, MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x);
-        //int Pos_Id = Get_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id, MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + *Slide_space[Slide_space_Scroll].x);
-        //显示菜单项目名::这里有两行文字是在屏幕外 用于动过渡动画
-        for (int i = -1;i < SCREEN_PAGE_NUM / 2 + 1;i++) {
-            if (MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + i >= 0 && MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + i <= MenuLevel[real_Level_Id].max) {
+        real_Level_Id = Get_Real_Menu_Level_Id(MenuLevelId); // MenuLevel global id -> MenuLevel[id]
+        Pos_Id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x); // Menu global id -> menu[id]
 
-                //绘制目录树
-                if (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x != 2) {
-                    //Set_Font_Size(2);
-                    _disp.drawUTF8(0, (1 - Menu_Smooth_Animation[3].x * (i != -1)) * ((i + Menu_Smooth_Animation[0].x) * 16 + 1), Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x == 0 ? "+" : "-");
-                }
-                //绘制目录名
-                Draw_Utf(7 * (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x != 2), (1 - Menu_Smooth_Animation[3].x * (i != -1)) * ((i + Menu_Smooth_Animation[0].x) * 16 + 1), Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].name);
+        //若当前菜单层级没有开题图标化则使用普通文本菜单的模式进行渲染显示 若屏幕分辨率低于128*32 则强制启用文本菜单模式
+        if (!MenuLevel[real_Level_Id].a || SCREEN_ROW <= 32) { // 文本菜单模式
 
-                //对特殊菜单控件的分类渲染
-                switch (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x) {
+            //显示菜单项目名, 这里有两行文字是在屏幕外 用于动过渡动画
+            for (int i = -1;i < SCREEN_PAGE_NUM / 2 + 1;i++) { //屏幕可以显示多少行
+                if (MenuLevel[real_Level_Id].x + i >= 0 && MenuLevel[real_Level_Id].x + i <= MenuLevel[real_Level_Id].max) { // 
 
-                    //开关控件
-                case 3:
-                    Draw_Utf(SCREEN_COLUMN - 32 - 1, (i + Menu_Smooth_Animation[0].x) * 16 + 1, *Switch_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a] ? (char*)"开启" : (char*)"关闭");
-                    break;
-
-                    //滑动条
-                case 4:
-                    char buffer[20];
-                    sprintf(buffer,"%.2f", *Slide_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a].x);
-                    Draw_Utf(SCREEN_COLUMN - 9 - _disp.getUTF8Width(buffer), \
-                        (int)((i + Menu_Smooth_Animation[0].x) * 16), \
-                        buffer);
-                    break;
-
-                    //单选框
-                case 5:
-                    if ((*Switch_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a] == Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].b)) {
-                        Draw_Slow_Bitmap(SCREEN_COLUMN - 32 - 1 + 15, \
-                            (i + Menu_Smooth_Animation[0].x) * 16 + 2, \
-                            CheckBoxSelection, \
-                            10, 10);
-                    } else {
-                        _disp.drawFrame(SCREEN_COLUMN - 32 - 1 + 15, \
-                            (i + Menu_Smooth_Animation[0].x) * 16 + 2, \
-                            10, 10);
+                    //绘制目录树
+                    if (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x != 2) { // x != 2 不是菜单名
+                        // _disp.drawUTF8(x， y， char)
+                        _disp.drawUTF8(0, (1 - Menu_Smooth_Animation[3].x * (i != -1)) * ((i + Menu_Smooth_Animation[0].x) * 16 + 1), Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x == 0 ? "+" : "-"); // 0-跳转到菜单
                     }
-                    //当前项高亮
-                    if ((int)*Slide_space[Slide_space_Scroll].x == i) {
-                        _disp.setDrawColor(2);
-                        _disp.drawBox(SCREEN_COLUMN - 32 - 2 + 15, \
-                            (i + Menu_Smooth_Animation[0].x) * 16 + 1, \
-                            12, 12);
-                        _disp.setDrawColor(1);
+
+                    //绘制目录名 _disp.drawUTF8(x,y+1,s);
+                    // 不是菜单名 * 7
+                    Draw_Utf(7 * (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x != 2), (1 - Menu_Smooth_Animation[3].x * (i != -1)) * ((i + Menu_Smooth_Animation[0].x) * 16 + 1), Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].name); // 选项名称
+
+                    //对特殊菜单控件的分类渲染
+                    switch (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x) {
+
+                        //开关控件
+                    case 3:
+                        Draw_Utf(SCREEN_COLUMN - 32 - 1, (i + Menu_Smooth_Animation[0].x) * 16 + 1, *Switch_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a] ? (char*)"开启" : (char*)"关闭");
+                        break;
+
+                        //滑动条
+                    case 4:
+                        char buffer[20];
+                        sprintf(buffer,"%.2f", *Slide_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a].x);
+                        Draw_Utf(SCREEN_COLUMN - 9 - _disp.getUTF8Width(buffer), \
+                            (int)((i + Menu_Smooth_Animation[0].x) * 16), \
+                            buffer);
+                        break;
+
+                        //单选框
+                    case 5:
+                        if ((*Switch_space[Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].a] == Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].b)) {
+                            Draw_Slow_Bitmap(SCREEN_COLUMN - 32 - 1 + 15, \
+                                (i + Menu_Smooth_Animation[0].x) * 16 + 2, \
+                                CheckBoxSelection, \
+                                10, 10);
+                        } else {
+                            _disp.drawFrame(SCREEN_COLUMN - 32 - 1 + 15, \
+                                (i + Menu_Smooth_Animation[0].x) * 16 + 2, \
+                                10, 10);
+                        }
+                        //当前项高亮
+                        if ((int)*Slide_space[Slide_space_Scroll].x == i) {
+                            _disp.setDrawColor(2);
+                            _disp.drawBox(SCREEN_COLUMN - 32 - 2 + 15, \
+                                (i + Menu_Smooth_Animation[0].x) * 16 + 1, \
+                                12, 12);
+                            _disp.setDrawColor(1);
+                        }
+                    
+                        break;
+                    default:
+                        break;
                     }
-                
-                    break;
-                default:
-                    break;
-                }
 
-            }
-        }
-
-        //绘制滚动条
-        Draw_Scale(SCREEN_COLUMN - RollingStripWidth, 0, RollingStripWidth, SCREEN_ROW - 1, MenuLevel[real_Level_Id].max + 1, map(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + *Slide_space[Slide_space_Scroll].x, 0, MenuLevel[real_Level_Id].max + 1, -Menu_Smooth_Animation[1].x * (SCREEN_ROW / (MenuLevel[real_Level_Id].max + 1)), SCREEN_ROW - 1));
-
-        //显示页码角标
-        Page_Footnotes(MenuLevel[real_Level_Id].x + 1 + (int)*Slide_space[Slide_space_Scroll].x, MenuLevel[real_Level_Id].max + 1);
-
-        //反色高亮被选项
-        _disp.setDrawColor(2);
-        _disp.drawRBox(0, \
-                            ((int)*Slide_space[Slide_space_Scroll].x - Menu_Smooth_Animation[1].x) * 16, \
-                            *Switch_space[SwitchSpace_OptionStripFixedLength]?123:(Get_UTF8_Ascii_Pix_Len(1,Menu[Pos_Id].name) - Menu_Smooth_Animation[2].x + 12 * (Menu[Pos_Id].x != 2) + 1), \
-                            CNSize + 2 , \
-                            0);
-        _disp.setDrawColor(1);
-
-        //项目滚动处理
-        *Slide_space[Slide_space_Scroll].x = sys_Counter_Get() - 1;
-        if ((int)*Slide_space[Slide_space_Scroll].x >= Slide_space[Slide_space_Scroll].max) {
-            Log(LOG_INFO, "尝试往下滚动");
-            MenuLevel[real_Level_Id].x++;
-            sys_Counter_SetVal(Slide_space[Slide_space_Scroll].max);
-        }else if ((int)*Slide_space[Slide_space_Scroll].x <= -1) {
-            Log(LOG_INFO,"尝试往上滚动");
-            MenuLevel[real_Level_Id].x--;
-            sys_Counter_SetVal(1);
-        }
-        //编码器控制页内选择框滚动选择
-        //CountMax = constrain(MenuLevel[real_Level_Id].max - MenuLevel[real_Level_Id].x + 1, 0, 7);
-        *Slide_space[Slide_space_Scroll].x = constrain((int)*Slide_space[Slide_space_Scroll].x, 0, Slide_space[Slide_space_Scroll].max - 1);
-
-        // *Slide_space[Slide_space_Scroll].x = constrain(*Slide_space[Slide_space_Scroll].x, 0, min((int)Slide_space[Slide_space_Scroll].max - 2, (int)MenuLevel[real_Level_Id].max));
-        MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x = constrain(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x, \
-                                                                    MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].min, \
-            (MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].max > Slide_space[Slide_space_Scroll].max - 1)?(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].max - (Slide_space[Slide_space_Scroll].max - 1)):0);
-
-        //更新过渡动画
-        real_Level_Id = Get_Real_Menu_Level_Id(MenuLevelId);
-        Pos_Id = Get_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id, MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + (int)*Slide_space[Slide_space_Scroll].x);
-        Menu_Smooth_Animation[0].val = MenuLevel[real_Level_Id].x;
-        Menu_Smooth_Animation[1].val = MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x;
-        Menu_Smooth_Animation[2].val = Get_UTF8_Ascii_Pix_Len(1,Menu[Pos_Id].name);
-
-    }
-    else {
-        /*  当前菜单使用了图标化的渲染方式 该模式仅支持128*64的屏幕 若宏定义中选择了128*32的屏幕将自动切换为普通文本模式显示菜单
-            接受两种尺寸的图标 14x14(推荐) 和 48*48 （不推荐）
-            如果为14x14在128*64屏幕中会自动放大到48*48
-        */
-        int id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x);
-        int Pos_Id;
-
-        //居中显示项目名
-        Draw_Utf(UTF8_HMiddle(0,128,1,Menu[id].name), 50, Menu[id].name);
-        
-        
-        for (uint8_t i = 0; i < 5; i++) {
-            Pos_Id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x + i - 2);
-
-            if (MenuLevel[real_Level_Id].x - 2 + i >= 0 && MenuLevel[real_Level_Id].x - 2 + i <= MenuLevel[real_Level_Id].max) {
-                //绘制菜单项目图标
-                if (Menu[id].x != 2) {
-                    if (Menu[Pos_Id].x != 2) {
-                        Draw_APP((1 - Menu_Smooth_Animation[3].x * (i != -1))*(-69 + i * 56 + Menu_Smooth_Animation[0].x * 56), 3, Menu[Pos_Id].icon);
-                    }
                 }
             }
+
+            //绘制滚动条
+            Draw_Scale(SCREEN_COLUMN - RollingStripWidth, 0, RollingStripWidth, SCREEN_ROW - 1, MenuLevel[real_Level_Id].max + 1, map(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + *Slide_space[Slide_space_Scroll].x, 0, MenuLevel[real_Level_Id].max + 1, -Menu_Smooth_Animation[1].x * (SCREEN_ROW / (MenuLevel[real_Level_Id].max + 1)), SCREEN_ROW - 1));
+
+            //显示页码角标
+            Page_Footnotes(MenuLevel[real_Level_Id].x + 1 + (int)*Slide_space[Slide_space_Scroll].x, MenuLevel[real_Level_Id].max + 1);
+
+            //反色高亮被选项
+            _disp.setDrawColor(2);
+            _disp.drawRBox(0, \
+                                ((int)*Slide_space[Slide_space_Scroll].x - Menu_Smooth_Animation[1].x) * 16, \
+                                *Switch_space[SwitchSpace_OptionStripFixedLength]?123:(Get_UTF8_Ascii_Pix_Len(1,Menu[Pos_Id].name) - Menu_Smooth_Animation[2].x + 12 * (Menu[Pos_Id].x != 2) + 1), \
+                                CNSize + 2 , \
+                                0);
+            _disp.setDrawColor(1);
+
+            //项目滚动处理
+            *Slide_space[Slide_space_Scroll].x = sys_Counter_Get() - 1;
+            if ((int)*Slide_space[Slide_space_Scroll].x >= Slide_space[Slide_space_Scroll].max) {
+                Log(LOG_INFO, "尝试往下滚动");
+                MenuLevel[real_Level_Id].x++;
+                sys_Counter_SetVal(Slide_space[Slide_space_Scroll].max);
+            }else if ((int)*Slide_space[Slide_space_Scroll].x <= -1) {
+                Log(LOG_INFO,"尝试往上滚动");
+                MenuLevel[real_Level_Id].x--;
+                sys_Counter_SetVal(1);
+            }
+            //编码器控制页内选择框滚动选择
+            //CountMax = constrain(MenuLevel[real_Level_Id].max - MenuLevel[real_Level_Id].x + 1, 0, 7);
+            *Slide_space[Slide_space_Scroll].x = constrain((int)*Slide_space[Slide_space_Scroll].x, 0, Slide_space[Slide_space_Scroll].max - 1);
+
+            // *Slide_space[Slide_space_Scroll].x = constrain(*Slide_space[Slide_space_Scroll].x, 0, min((int)Slide_space[Slide_space_Scroll].max - 2, (int)MenuLevel[real_Level_Id].max));
+            MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x = constrain(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x, \
+                                                                        MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].min, \
+                (MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].max > Slide_space[Slide_space_Scroll].max - 1)?(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].max - (Slide_space[Slide_space_Scroll].max - 1)):0);
+
+            //更新过渡动画
+            real_Level_Id = Get_Real_Menu_Level_Id(MenuLevelId);
+            Pos_Id = Get_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id, MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].x + (int)*Slide_space[Slide_space_Scroll].x);
+            Menu_Smooth_Animation[0].val = MenuLevel[real_Level_Id].x;
+            Menu_Smooth_Animation[1].val = MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x;
+            Menu_Smooth_Animation[2].val = Get_UTF8_Ascii_Pix_Len(1,Menu[Pos_Id].name);
+
         }
+        else { //图标化
+            /*  当前菜单使用了图标化的渲染方式 该模式仅支持128*64的屏幕 若宏定义中选择了128*32的屏幕将自动切换为普通文本模式显示菜单
+                接受两种尺寸的图标 14x14(推荐) 和 48*48 （不推荐）
+                如果为14x14在128*64屏幕中会自动放大到48*48
+            */
+            int id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x);
+            int Pos_Id;
 
-        // Serial.print("x1:");
-        // Serial.print(MenuLevel[real_Level_Id].x);
+            //居中显示项目名
+            Draw_Utf(UTF8_HMiddle(0,128,1,Menu[id].name), 50, Menu[id].name);
+            
+            
+            for (uint8_t i = 0; i < 5; i++) {
+                Pos_Id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x + i - 2);
 
-        MenuLevel[real_Level_Id].x = sys_Counter_Get();
-        Menu_Smooth_Animation[0].val=MenuLevel[real_Level_Id].x;
+                if (MenuLevel[real_Level_Id].x - 2 + i >= 0 && MenuLevel[real_Level_Id].x - 2 + i <= MenuLevel[real_Level_Id].max) {
+                    //绘制菜单项目图标
+                    if (Menu[id].x != 2) {
+                        if (Menu[Pos_Id].x != 2) {
+                            Draw_APP((1 - Menu_Smooth_Animation[3].x * (i != -1))*(-69 + i * 56 + Menu_Smooth_Animation[0].x * 56), 3, Menu[Pos_Id].icon);
+                        }
+                    }
+                }
+            }
 
-        // Serial.print(" x2:");
-        // Serial.print(MenuLevel[real_Level_Id].x);
-
-        // Serial.print(" 编码器:");
-        // Serial.println(sys_Counter_Get());
+            MenuLevel[real_Level_Id].x = sys_Counter_Get();
+            Menu_Smooth_Animation[0].val=MenuLevel[real_Level_Id].x;
+        }
         
-    }
-    
-    //编码器按下事件
-    //菜单被选项激活 触发菜单被选项预设事件
-    switch(SYSKey) {
-        case 1:
-        case 3:
-            //单击和双击则执行当前项目
-            Run_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id,MenuLevel[real_Level_Id].x +  *Slide_space[Slide_space_Scroll].x);
-        break;
-        case 2:
-            //长按执行 标题跳转
-            Run_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id,0);
-        break;
+        //编码器按下事件
+        //菜单被选项激活 触发菜单被选项预设事件
+        switch(SYSKey) {
+            case 1:
+            case 3:
+                //单击和双击则执行当前项目
+                Run_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id,MenuLevel[real_Level_Id].x +  *Slide_space[Slide_space_Scroll].x);
+            break;
+            case 2:
+                //长按执行 标题跳转
+                Run_Menu_Id(MenuLevel[Get_Real_Menu_Level_Id(MenuLevelId)].id,0);
+            break;
+            
+            default:break;
+        }
         
-        default:break;
-    }
-    
     }else{
         if (sys_status.SleepEvent) RunSleepLoop(); //睡眠模式屏保入口
         else {

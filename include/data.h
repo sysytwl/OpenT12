@@ -29,8 +29,8 @@ struct SystemStatus{
   bool ERROREvent = false;
   bool SleepEvent = false;
   float voltage = 0;
-  uint8_t SYSKey = 0;
-  char* Status_Mes[]={"错误","正常",};
+  uint8_t SysKey = 0;
+  uint8_t PanelSet = 0;
 } sys_status;
 
 struct SystemInfo {
@@ -64,15 +64,11 @@ struct SystemConfig {
   uint8_t Language = LANG_Chinese;
 
   enum SYSLANG {
-      LANG_English = 0,
-      LANG_Chinese,
-      LANG_Russian,
+    LANG_English = 0,
+    LANG_Chinese,
+    LANG_Russian,
   };
 
-  enum PANELSET {
-      PANELSET_Simple = 0,
-      PANELSET_Detailed,
-  };
 } sys_config;
 
 #endif

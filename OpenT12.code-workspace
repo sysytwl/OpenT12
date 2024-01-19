@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.m": "matlab",
+			"shell.h": "c",
+			"array": "cpp",
+			"string": "cpp",
+			"cstdint": "cpp",
+			"random": "cpp",
+			"*.tcc": "cpp"
+		}
+	}
+}
