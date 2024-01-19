@@ -451,3 +451,67 @@ void externdraw::Draw_APP(int x, int y, uint8_t* bitmap) {
 
     Draw_Slow_Bitmap_Resize(x, y, bitmap + 1, bitmap[0], bitmap[0], 42, 42);
 }
+
+void externdraw::DetailInfo(void) {
+    char buffer[50];
+    for (uint8_t i = 0;i < 5;i++) {
+        _disp.setCursor(0, 12 * i + 1);
+        switch (i) {
+            case 0: sprintf(buffer, "状态%d:%s 控温:%s", TempCTRL_Status, TempCTRL_Status_Mes[TempCTRL_Status], (PIDMode == 1) ? "PID" : "模糊"); break;
+            case 1: sprintf(buffer, "设定%.0lf°C 当前%.0lf°C", PID_Setpoint, TipTemperature); break;
+            case 2: sprintf(buffer, "ADC:%d PID:%.0lf", LastADC, PID_Output); break;
+            case 3: sprintf(buffer, "%.2lfV %.2lfA %.2lfW", SYS_Voltage, SYS_Current,SYS_Voltage * SYS_Current); break;
+            case 4: sprintf(buffer, "%.3lf %.3lf %.3lf", aggKp, aggKi, aggKd); break;
+            default: break;
+        }
+        _disp.print(buffer);
+    }
+}
+
+
+void externdraw::BriefInfo(void) {
+    _disp.drawUTF8(0, 1, TipName); //显示烙铁头名称
+    Draw_Slow_Bitmap(74, 37, C_table[TempCTRL_Status], 14, 14); //温度控制状态图标
+    _disp.drawUTF8(91, 40, TempCTRL_Status_Mes[TempCTRL_Status]); //显示中文状态信息
+    if (UnderVoltageEvent) { //欠压警报
+        if ((millis() / 1000) % 2) {
+            Draw_Slow_Bitmap(74, 21, Battery_NoPower, 14, 14); //欠压告警图标
+        }else{ //主电源电压
+            _disp.setCursor(74, 24);
+            _disp.printf("%.1fV", SYS_Voltage);
+        }
+    }else{ //显示蓝牙图标
+        Draw_Slow_Bitmap(92, 25, IMG_BLE_S, 9, 11);
+    }
+
+    //显示当前温度
+    _disp.setFont(u8g2_font_logisoso38_tr);
+    _disp.setCursor(0,12);
+    if (TempCTRL_Status == TEMP_STATUS_ERROR || ERROREvent) {
+        if ((millis() / 250) % 2) _disp.print("---");
+    }else {
+        _disp.printf("%.0lf", TipTemperature); //显示真实温度
+    }
+
+    _disp.setFont(u8g2_font_wqy12_t_gb2312);
+
+    //右上角运行指示角标
+    if (POWER > 0 && PWM_WORKY) {
+        uint8_t TriangleSize = map(POWER,0,255,16,0);
+        //_disp.drawTriangle(100 + TriangleSize, 0, 127, 0, 127, 27 - TriangleSize);
+        _disp.drawTriangle((119 - 12) + TriangleSize, 12, 125, 12, 125, (18 +12) - TriangleSize);
+        // Draw_Slow_Bitmap(114, 15, PositioningCursor, 8, 8);
+        //_disp.drawTriangle(103, 0, 127, 0, 127, 24);
+    }
+
+    /////////////////////////////////////绘制遮罩层//////////////////////////////////////////////
+    _disp.setDrawColor(2);
+    //几何图形切割
+    _disp.drawBox(0, 12, 96, 40);
+    _disp.drawTriangle(96,12,96,52,125,42);
+    _disp.drawTriangle(125,42,96,52,118,52);
+    _disp.setDrawColor(1);
+
+    //绘制底部状态条
+    DrawStatusBar(1);
+}

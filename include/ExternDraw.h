@@ -40,6 +40,8 @@ public:
     void Pop_Windows(const char* s);
     void Page_Footnotes(int a, int b);
     void Draw_APP(int x, int y, uint8_t* bitmap);
+    void DetailInfo(void);
+    void BriefInfo(void)
 
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C _disp; // (U8G2_R0, /* reset=*/ U8X8_PIN_NONE)
