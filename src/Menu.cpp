@@ -2,6 +2,12 @@
 #include "Bitmap.h"
 #include "data.h"
 
+#define CNSize 12
+#define SCREEN_COLUMN 128
+#define SCREEN_ROW    64
+#define SCREEN_PAGE_NUM 8
+#define SCREEN_FONT_ROW 4
+
 
 
 //跳转即退出菜单，该标志位适用于快速打开菜单设置，当遇到跳转操作时将保存设置并退出菜单
@@ -170,7 +176,7 @@ struct Smooth_Animation {
         uint8_t a   是否允许累加
         uint8_t b   选择过渡动画计算函数
 */
-#define Smooth_Animation_Num sizeof(Menu_Smooth_Animation)/sizeof(Menu_Smooth_Animation[0])
+#define Smooth_Animation_Num sizeof(Menu_Smooth_Animation)/sizeof(Menu_Smooth_Animation[0]) // layers
 struct Smooth_Animation Menu_Smooth_Animation[] = {
     {0,0,0,0.4,1,0}, //菜单项目滚动动画
     {0,0,0,0.15,1,0}, //滚动条平滑动画
@@ -226,7 +232,7 @@ struct Menu_Level_System MenuLevel[] = {
     @param -
     
     @变量
-        uint8_t lid             层id
+        uint8_t Level_id             层id
         uint8_t id              选项id
         uint8_t x               执行操作 0-跳转到菜单 1-执行函数 2-菜单名 3-开关控件 4-滑动条控件
         char name[21]      选项名称 支持半角
@@ -255,7 +261,7 @@ struct Menu_System Menu[] = {
     {0, 7, Jump_Menu_Op, "个性化", IMG_Pen, 6, 0, Menu_NULL_F},
     {0, 8, Jump_Menu_Op, "语言设置", Set_LANG, 13, 0, Menu_NULL_F},
     {0, 9, F_Menu_Op, "关于", QRC, 5, 5, *About},
-    {0, 10, F_Menu_Op, "返回", Menu_NULL_IMG, 0, 0, *Save_Exit_Menu_System},
+    {0, 10, F_Menu_Op, "返回", Set7, 0, 0, *Save_Exit_Menu_System},
 
     {1, 0, Title_Menu_Op, "蓝牙", Menu_NULL_IMG, 5, 2, Menu_NULL_F},
     {1, 1, Switch_Menu_Op, "状态", Menu_NULL_IMG, SwitchSpace_BLE_State, 0, Menu_NULL_F}, // <---
@@ -277,7 +283,7 @@ struct Menu_System Menu[] = {
 
     {4, 0, Title_Menu_Op, "语言设置", Menu_NULL_IMG, 5, 5, Menu_NULL_F},
     {4, 1, SingleBox_Menu_Op, "English", Lang_EN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
-    {4, 1, SingleBox_Menu_Op, "简体中文", Lang_CN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
+    {4, 2, SingleBox_Menu_Op, "简体中文", Lang_CN, SwitchSpace_Language, LANG_Chinese, *JumpWithTitle},
  
     {5, 0, Title_Menu_Op, "面板设置", Menu_NULL_IMG, 7, 1, Menu_NULL_F},
     {5, 1, SingleBox_Menu_Op, "简约", Set17, SwitchSpace_PanelSettings, 0, *JumpWithTitle},
@@ -290,21 +296,20 @@ struct Menu_System Menu[] = {
 };
 
 //系统UI
-void System_UI(void) {
-    if (Menu) {
+void menu::System_UI(void) {
+    if (MenuOn) {
         _disp.clearBuffer();
+
         Smooth_Animation_System(); //计算过渡动画
 
-        //分别获取 菜单层、菜单项 索引值
-        real_Level_Id = Get_Real_Menu_Level_Id(MenuLevelId); // MenuLevel global id -> MenuLevel[id]
-        Pos_Id = Get_Menu_Id(MenuLevel[real_Level_Id].id, MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x); // Menu global id -> menu[id]
+        // 确定目录树层
+        uint8_t Level_id = Menu[_GlobalLayerNum].lid;
 
-        //若当前菜单层级没有开题图标化则使用普通文本菜单的模式进行渲染显示 若屏幕分辨率低于128*32 则强制启用文本菜单模式
-        if (!MenuLevel[real_Level_Id].a || SCREEN_ROW <= 32) { // 文本菜单模式
+        if (!Menu[_GlobalLayerNum].icon || SCREEN_ROW <= 32) { //若当前菜单层级没有开题图标化则使用普通文本菜单的模式进行渲染显示 若屏幕分辨率低于128*32 则强制启用文本菜单模式
 
             //显示菜单项目名, 这里有两行文字是在屏幕外 用于动过渡动画
             for (int i = -1;i < SCREEN_PAGE_NUM / 2 + 1;i++) { //屏幕可以显示多少行
-                if (MenuLevel[real_Level_Id].x + i >= 0 && MenuLevel[real_Level_Id].x + i <= MenuLevel[real_Level_Id].max) { // 
+                if (Menu[_GlobalLayerNum].x + i >= 0 && MenuLevel[real_Level_Id].x + i <= MenuLevel[real_Level_Id].max) { //确定要绘制的目录树存在 >0 , <max
 
                     //绘制目录树
                     if (Menu[Get_Menu_Id(real_Level_Id, MenuLevel[real_Level_Id].x + i)].x != 2) { // x != 2 不是菜单名
@@ -404,8 +409,7 @@ void System_UI(void) {
             Menu_Smooth_Animation[1].val = MenuLevel[real_Level_Id].x + (int)*Slide_space[Slide_space_Scroll].x;
             Menu_Smooth_Animation[2].val = Get_UTF8_Ascii_Pix_Len(1,Menu[Pos_Id].name);
 
-        }
-        else { //图标化
+        } else { //图标化
             /*  当前菜单使用了图标化的渲染方式 该模式仅支持128*64的屏幕 若宏定义中选择了128*32的屏幕将自动切换为普通文本模式显示菜单
                 接受两种尺寸的图标 14x14(推荐) 和 48*48 （不推荐）
                 如果为14x14在128*64屏幕中会自动放大到48*48
@@ -502,7 +506,7 @@ void JumpWithTitle(void) {
     @函数 Smooth_Animation_System
     @brief 过渡动画运算
 */
-void Smooth_Animation_System() {
+void menu::Smooth_Animation_System() {
     for (uint8_t i = 0;i < Smooth_Animation_Num;i++) {
         //优化计算：变形过滤器
         if (Menu_Smooth_Animation[i].x && abs(Menu_Smooth_Animation[i].x * 100) < 1.5) Menu_Smooth_Animation[i].x = 0;

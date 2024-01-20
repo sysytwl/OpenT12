@@ -17,9 +17,8 @@ public:
         _disp.setFont(u8g2_font_wqy12_t_gb2312);
         _disp.setDrawColor(1);
         _disp.setFontMode(1);
-
         //_Bepper = Beeper; // value <- *address?
-    }
+    };
 
     void Clear(void);
     void Display(void);
@@ -41,7 +40,7 @@ public:
     void Page_Footnotes(int a, int b);
     void Draw_APP(int x, int y, uint8_t* bitmap);
     void DetailInfo(void);
-    void BriefInfo(void)
+    void BriefInfo(void);
 
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C _disp; // (U8G2_R0, /* reset=*/ U8X8_PIN_NONE)
@@ -50,7 +49,6 @@ private:
     // U8G2_ST7920_128X64_F_HW_SPI Disp(U8G2_R0, 5, 15);
     // U8G2_ST7920_128X64_F_SW_SPI Disp(U8G2_R0, /*clock*/18, /*data*/23, /*cs*/5, /*reset*/15);
     beeper &_Bepper;
-
     uint8_t DisplayFlashTick = 0;
 };
 
